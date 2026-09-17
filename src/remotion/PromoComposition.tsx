@@ -7,45 +7,74 @@ import {
 	useVideoConfig,
 	Easing,
 } from "remotion";
-import "@fontsource-variable/geist";
+import "@fontsource-variable/plus-jakarta-sans";
 import "@fontsource-variable/geist-mono";
 
 const INK = "#0a0c0e";
 const PAPER = "#f2f4f5";
 const AMBER = "#f2a93c";
-const MUTED = "#5b6470";
+const BLUE = "#6ea8fe";
+const MUTED = "#7a828c";
 const LIVE = "#ff3b3b";
 
-const sans = "'Geist Variable', sans-serif";
+const sans = "'Plus Jakarta Sans Variable', sans-serif";
 const mono = "'Geist Mono Variable', ui-monospace, monospace";
 
-function LiveDot() {
+function useSpringIn(delay: number, config: Parameters<typeof spring>[0]["config"] = { damping: 200 }) {
+	const frame = useCurrentFrame();
+	const { fps } = useVideoConfig();
+	return spring({ frame: frame - delay, fps, config });
+}
+
+function Backdrop() {
+	return (
+		<AbsoluteFill
+			style={{
+				backgroundColor: INK,
+				backgroundImage: `radial-gradient(circle at 14% 12%, ${hexA(AMBER, 0.1)}, transparent 42%), radial-gradient(circle at 86% 78%, ${hexA(BLUE, 0.08)}, transparent 46%)`,
+			}}
+		/>
+	);
+}
+
+function hexA(hex: string, alpha: number) {
+	const n = parseInt(hex.slice(1), 16);
+	const r = (n >> 16) & 255;
+	const g = (n >> 8) & 255;
+	const b = n & 255;
+	return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function Scanlines() {
+	const frame = useCurrentFrame();
+	const offset = (frame * 1.4) % 6;
+	return (
+		<AbsoluteFill
+			style={{
+				pointerEvents: "none",
+				mixBlendMode: "overlay",
+				backgroundImage:
+					"repeating-linear-gradient(to bottom, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px)",
+				backgroundPositionY: `${offset}px`,
+			}}
+		/>
+	);
+}
+
+function LiveBadge({ style }: { style?: React.CSSProperties }) {
 	const frame = useCurrentFrame();
 	const { fps } = useVideoConfig();
 	const pulse = Math.abs(Math.sin((frame / fps) * Math.PI * 1.4));
 	return (
-		<div
-			style={{
-				position: "absolute",
-				top: 56,
-				right: 64,
-				display: "flex",
-				alignItems: "center",
-				gap: 12,
-				fontFamily: mono,
-				fontSize: 22,
-				letterSpacing: 2,
-				color: MUTED,
-			}}
-		>
+		<div style={{ display: "flex", alignItems: "center", gap: 10, fontFamily: mono, fontSize: 18, letterSpacing: 2, color: MUTED, ...style }}>
 			<div
 				style={{
-					width: 14,
-					height: 14,
+					width: 12,
+					height: 12,
 					borderRadius: 999,
 					backgroundColor: LIVE,
 					opacity: 0.55 + pulse * 0.45,
-					boxShadow: `0 0 ${8 + pulse * 10}px ${LIVE}`,
+					boxShadow: `0 0 ${6 + pulse * 8}px ${LIVE}`,
 				}}
 			/>
 			LIVE
@@ -53,98 +82,27 @@ function LiveDot() {
 	);
 }
 
-function Node({
-	label,
-	sub,
-	delay,
-	accent = false,
-}: {
-	label: string;
-	sub?: string;
-	delay: number;
-	accent?: boolean;
-}) {
-	const frame = useCurrentFrame();
-	const { fps } = useVideoConfig();
-	const progress = spring({ frame: frame - delay, fps, config: { damping: 200 } });
-	return (
-		<div
-			style={{
-				opacity: progress,
-				transform: `translateY(${(1 - progress) * 16}px)`,
-				border: `1px solid ${accent ? AMBER : "rgba(242,244,245,0.16)"}`,
-				borderRadius: 10,
-				padding: "20px 28px",
-				minWidth: 220,
-				textAlign: "center",
-				backgroundColor: "rgba(255,255,255,0.02)",
-			}}
-		>
-			<div style={{ fontFamily: mono, fontSize: 26, color: accent ? AMBER : PAPER, letterSpacing: 1 }}>
-				{label}
-			</div>
-			{sub ? (
-				<div style={{ fontFamily: sans, fontSize: 16, color: MUTED, marginTop: 6 }}>{sub}</div>
-			) : null}
-		</div>
-	);
-}
-
-function Arrow({ delay }: { delay: number }) {
-	const frame = useCurrentFrame();
-	const { fps } = useVideoConfig();
-	const progress = spring({ frame: frame - delay, fps, config: { damping: 200 } });
-	return (
-		<div
-			style={{
-				width: 64 * progress,
-				height: 1,
-				backgroundColor: MUTED,
-				alignSelf: "center",
-				overflow: "hidden",
-			}}
-		/>
-	);
-}
-
 function Wordmark({ scale = 1 }: { scale?: number }) {
 	return (
-		<div
-			style={{
-				display: "flex",
-				alignItems: "center",
-				gap: 14 * scale,
-				fontFamily: mono,
-				fontSize: 40 * scale,
-				color: PAPER,
-				letterSpacing: 1,
-			}}
-		>
-			<div
-				style={{
-					width: 14 * scale,
-					height: 14 * scale,
-					borderRadius: 999,
-					backgroundColor: AMBER,
-				}}
-			/>
+		<div style={{ display: "flex", alignItems: "center", gap: 14 * scale, fontFamily: mono, fontSize: 40 * scale, color: PAPER, letterSpacing: 1 }}>
+			<div style={{ width: 14 * scale, height: 14 * scale, borderRadius: 999, backgroundColor: AMBER }} />
 			jawax
 		</div>
 	);
 }
 
+// Scene 1 — title
 function SceneTitle() {
 	const frame = useCurrentFrame();
-	const { fps } = useVideoConfig();
-	const mark = spring({ frame, fps, config: { damping: 200 } });
-	const tagline = interpolate(frame, [18, 40], [0, 1], {
+	const mark = useSpringIn(0);
+	const tagline = interpolate(frame, [18, 42], [0, 1], {
 		extrapolateLeft: "clamp",
 		extrapolateRight: "clamp",
 		easing: Easing.out(Easing.quad),
 	});
 	return (
-		<AbsoluteFill style={{ backgroundColor: INK, alignItems: "center", justifyContent: "center" }}>
-			<div style={{ opacity: mark, transform: `scale(${0.9 + mark * 0.1})` }}>
+		<AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
+			<div style={{ opacity: mark, transform: `scale(${0.92 + mark * 0.08})` }}>
 				<Wordmark scale={2.4} />
 			</div>
 			<div
@@ -152,6 +110,7 @@ function SceneTitle() {
 					opacity: tagline,
 					transform: `translateY(${(1 - tagline) * 10}px)`,
 					fontFamily: sans,
+					fontWeight: 500,
 					fontSize: 24,
 					color: MUTED,
 					marginTop: 22,
@@ -163,20 +122,94 @@ function SceneTitle() {
 	);
 }
 
-function SceneSignalPath() {
+// Scene 2 — a live signal coming in
+function WaveBar({ i }: { i: number }) {
+	const frame = useCurrentFrame();
+	const h = 6 + Math.abs(Math.sin(frame / 5 + i * 1.3)) * 22;
+	return <div style={{ width: 4, height: h, borderRadius: 2, backgroundColor: AMBER, opacity: 0.8 }} />;
+}
+
+function SceneLiveSignal() {
+	const frame = useCurrentFrame();
+	const frameIn = useSpringIn(0);
+	const sweep = interpolate(frame, [10, 55], [0, 100], {
+		extrapolateLeft: "clamp",
+		extrapolateRight: "clamp",
+		easing: Easing.out(Easing.cubic),
+	});
+	const chips = useSpringIn(60);
 	return (
-		<AbsoluteFill style={{ backgroundColor: INK, alignItems: "center", justifyContent: "center" }}>
-			<LiveDot />
+		<AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
 			<div
 				style={{
-					fontFamily: mono,
-					fontSize: 18,
-					color: MUTED,
-					letterSpacing: 3,
-					textTransform: "uppercase",
-					marginBottom: 44,
+					opacity: frameIn,
+					transform: `scale(${0.95 + frameIn * 0.05})`,
+					width: 520,
+					height: 292,
+					borderRadius: 10,
+					border: `1px solid ${hexA(PAPER, 0.16)}`,
+					position: "relative",
+					overflow: "hidden",
+					backgroundColor: hexA(PAPER, 0.02),
 				}}
 			>
+				<div
+					style={{
+						position: "absolute",
+						inset: 0,
+						background: `linear-gradient(to bottom, transparent, ${hexA(AMBER, 0.18)}, transparent)`,
+						transform: `translateY(${sweep - 30}%)`,
+					}}
+				/>
+				<LiveBadge style={{ position: "absolute", top: 16, left: 18 }} />
+				<div style={{ position: "absolute", bottom: 18, left: 0, right: 0, display: "flex", justifyContent: "center", gap: 5 }}>
+					{Array.from({ length: 11 }).map((_, i) => (
+						<WaveBar key={i} i={i} />
+					))}
+				</div>
+			</div>
+			<div style={{ opacity: chips, marginTop: 28, display: "flex", gap: 14, fontFamily: mono, fontSize: 16, color: MUTED }}>
+				<span style={{ border: `1px solid ${hexA(PAPER, 0.16)}`, borderRadius: 6, padding: "6px 14px" }}>RTMP</span>
+				<span style={{ border: `1px solid ${hexA(PAPER, 0.16)}`, borderRadius: 6, padding: "6px 14px" }}>WHIP</span>
+				<span style={{ alignSelf: "center" }}>incoming</span>
+			</div>
+		</AbsoluteFill>
+	);
+}
+
+// Scene 3 — signal path
+function Node({ label, sub, delay, accent = false }: { label: string; sub?: string; delay: number; accent?: boolean }) {
+	const progress = useSpringIn(delay);
+	return (
+		<div
+			style={{
+				opacity: progress,
+				transform: `translateY(${(1 - progress) * 16}px)`,
+				border: `1px solid ${accent ? AMBER : hexA(PAPER, 0.16)}`,
+				borderRadius: 10,
+				padding: "20px 28px",
+				minWidth: 220,
+				textAlign: "center",
+				whiteSpace: "nowrap",
+				backgroundColor: hexA(PAPER, 0.02),
+			}}
+		>
+			<div style={{ fontFamily: mono, fontSize: 26, color: accent ? AMBER : PAPER, letterSpacing: 1 }}>{label}</div>
+			{sub ? <div style={{ fontFamily: sans, fontSize: 15, color: MUTED, marginTop: 6 }}>{sub}</div> : null}
+		</div>
+	);
+}
+
+function Arrow({ delay }: { delay: number }) {
+	const progress = useSpringIn(delay);
+	return <div style={{ width: 64 * progress, height: 1, backgroundColor: hexA(PAPER, 0.3), alignSelf: "center" }} />;
+}
+
+function SceneSignalPath() {
+	return (
+		<AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
+			<LiveBadge style={{ position: "absolute", top: 56, right: 64 }} />
+			<div style={{ fontFamily: mono, fontSize: 18, color: MUTED, letterSpacing: 3, textTransform: "uppercase", marginBottom: 44 }}>
 				Ingest &rarr; transcode &rarr; deliver
 			</div>
 			<div style={{ display: "flex", alignItems: "center" }}>
@@ -196,52 +229,99 @@ function SceneSignalPath() {
 	);
 }
 
-function FactLine({ text, delay }: { text: string; delay: number }) {
-	const frame = useCurrentFrame();
-	const { fps } = useVideoConfig();
-	const progress = spring({ frame: frame - delay, fps, config: { damping: 200 } });
+// Scene 4 — ABR ladder
+function LadderBar({ label, kbps, height, delay }: { label: string; kbps: string; height: number; delay: number }) {
+	const progress = useSpringIn(delay, { damping: 16 });
 	return (
-		<div
-			style={{
-				opacity: progress,
-				transform: `translateX(${(1 - progress) * -24}px)`,
-				display: "flex",
-				alignItems: "center",
-				gap: 18,
-				fontFamily: sans,
-				fontSize: 30,
-				color: PAPER,
-			}}
-		>
-			<span style={{ color: AMBER, fontFamily: mono }}>&gt;</span>
-			{text}
+		<div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
+			<div
+				style={{
+					width: 70,
+					height: height * progress,
+					borderRadius: 6,
+					background: `linear-gradient(to top, ${AMBER}, ${hexA(AMBER, 0.35)})`,
+				}}
+			/>
+			<div style={{ fontFamily: mono, fontSize: 16, color: PAPER }}>{label}</div>
+			<div style={{ fontFamily: mono, fontSize: 12, color: MUTED }}>{kbps}</div>
 		</div>
 	);
 }
 
-function SceneFacts() {
+function SceneLadder() {
 	return (
-		<AbsoluteFill style={{ backgroundColor: INK, justifyContent: "center", paddingLeft: 160 }}>
-			<LiveDot />
-			<div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-				<FactLine text="Per-channel process isolation — OTP" delay={0} />
-				<FactLine text="Control plane and media plane, split apart" delay={18} />
-				<FactLine text="Self-host license fails open, never bricks a live stream" delay={36} />
+		<AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
+			<div style={{ fontFamily: mono, fontSize: 18, color: MUTED, letterSpacing: 3, textTransform: "uppercase", marginBottom: 36 }}>
+				One input, an ABR ladder out
+			</div>
+			<div style={{ display: "flex", alignItems: "flex-end", gap: 40, height: 200 }}>
+				<LadderBar label="720p" kbps="2500 kbps" height={170} delay={0} />
+				<LadderBar label="480p" kbps="1200 kbps" height={120} delay={8} />
+				<LadderBar label="360p" kbps="700 kbps" height={80} delay={16} />
 			</div>
 		</AbsoluteFill>
 	);
 }
 
+// Scene 5 — control plane / media plane
+function PlaneBox({ title, color, items, delay, align }: { title: string; color: string; items: string[]; delay: number; align: "left" | "right" }) {
+	const progress = useSpringIn(delay);
+	return (
+		<div
+			style={{
+				opacity: progress,
+				transform: `translateX(${(1 - progress) * (align === "left" ? -20 : 20)}px)`,
+				border: `1px solid ${color}`,
+				borderRadius: 10,
+				padding: "22px 26px",
+				width: 300,
+				backgroundColor: hexA(color, 0.06),
+			}}
+		>
+			<div style={{ fontFamily: mono, fontSize: 14, letterSpacing: 2, color, textTransform: "uppercase" }}>{title}</div>
+			<div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 6 }}>
+				{items.map((item) => (
+					<div key={item} style={{ fontFamily: sans, fontSize: 16, color: PAPER }}>
+						{item}
+					</div>
+				))}
+			</div>
+		</div>
+	);
+}
+
+function SceneArchitecture() {
+	const link = useSpringIn(20);
+	return (
+		<AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
+			<div style={{ fontFamily: sans, fontWeight: 600, fontSize: 26, color: PAPER, marginBottom: 36, textAlign: "center" }}>
+				Control plane and media plane, split on purpose.
+			</div>
+			<div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+				<PlaneBox title="Control plane" color={BLUE} items={["jawax_api", "Postgres", "Oban jobs"]} delay={0} align="left" />
+				<div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, opacity: link }}>
+					<div style={{ width: 48, height: 1, backgroundColor: hexA(PAPER, 0.3) }} />
+					<span style={{ fontFamily: mono, fontSize: 12, color: MUTED }}>gRPC</span>
+					<div style={{ width: 48, height: 1, backgroundColor: hexA(PAPER, 0.3) }} />
+				</div>
+				<PlaneBox title="Media plane" color={AMBER} items={["jawax_ingest", "jawax_transcode", "jawax_sfu"]} delay={10} align="right" />
+			</div>
+			<div style={{ marginTop: 28, fontFamily: sans, fontSize: 15, color: MUTED, opacity: link }}>
+				A control-plane blip never touches a stream that's already live.
+			</div>
+		</AbsoluteFill>
+	);
+}
+
+// Scene 6 — offerings
 function OfferingChip({ label, note, delay, dim = false }: { label: string; note: string; delay: number; dim?: boolean }) {
-	const frame = useCurrentFrame();
-	const { fps } = useVideoConfig();
-	const progress = spring({ frame: frame - delay, fps, config: { damping: 200 } });
+	const progress = useSpringIn(delay);
 	return (
 		<div
 			style={{
 				opacity: progress * (dim ? 0.55 : 1),
 				transform: `translateY(${(1 - progress) * 16}px)`,
-				border: `1px solid ${dim ? "rgba(242,244,245,0.12)" : "rgba(242,169,60,0.5)"}`,
+				border: `1px solid ${dim ? hexA(PAPER, 0.12) : hexA(AMBER, 0.5)}`,
 				borderRadius: 10,
 				padding: "24px 30px",
 				width: 280,
@@ -255,7 +335,7 @@ function OfferingChip({ label, note, delay, dim = false }: { label: string; note
 
 function SceneOfferings() {
 	return (
-		<AbsoluteFill style={{ backgroundColor: INK, alignItems: "center", justifyContent: "center" }}>
+		<AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
 			<div style={{ display: "flex", gap: 20 }}>
 				<OfferingChip label="Open source" note="Self-host, AGPL-3.0" delay={0} />
 				<OfferingChip label="Cloud managed" note="We run the media plane" delay={8} />
@@ -265,25 +345,15 @@ function SceneOfferings() {
 	);
 }
 
+// Scene 7 — end card
 function SceneEnd() {
-	const frame = useCurrentFrame();
-	const { fps } = useVideoConfig();
-	const progress = spring({ frame, fps, config: { damping: 200 } });
+	const progress = useSpringIn(0);
 	return (
-		<AbsoluteFill style={{ backgroundColor: INK, alignItems: "center", justifyContent: "center" }}>
+		<AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
 			<div style={{ opacity: progress }}>
 				<Wordmark scale={1.8} />
 			</div>
-			<div
-				style={{
-					opacity: progress,
-					fontFamily: mono,
-					fontSize: 18,
-					color: AMBER,
-					marginTop: 20,
-					letterSpacing: 1,
-				}}
-			>
+			<div style={{ opacity: progress, fontFamily: mono, fontSize: 18, color: AMBER, marginTop: 20, letterSpacing: 1 }}>
 				Read the docs &rarr;
 			</div>
 		</AbsoluteFill>
@@ -292,22 +362,32 @@ function SceneEnd() {
 
 export function PromoComposition() {
 	return (
-		<AbsoluteFill style={{ backgroundColor: INK }}>
+		<AbsoluteFill>
+			<Backdrop />
 			<Sequence durationInFrames={60}>
 				<SceneTitle />
 			</Sequence>
-			<Sequence from={60} durationInFrames={140}>
+			<Sequence from={60} durationInFrames={100}>
+				<SceneLiveSignal />
+			</Sequence>
+			<Sequence from={160} durationInFrames={120}>
 				<SceneSignalPath />
 			</Sequence>
-			<Sequence from={200} durationInFrames={90}>
-				<SceneFacts />
+			<Sequence from={280} durationInFrames={60}>
+				<SceneLadder />
 			</Sequence>
-			<Sequence from={290} durationInFrames={70}>
+			<Sequence from={340} durationInFrames={100}>
+				<SceneArchitecture />
+			</Sequence>
+			<Sequence from={440} durationInFrames={70}>
 				<SceneOfferings />
 			</Sequence>
-			<Sequence from={360} durationInFrames={60}>
+			<Sequence from={510} durationInFrames={60}>
 				<SceneEnd />
 			</Sequence>
+			<Scanlines />
 		</AbsoluteFill>
 	);
 }
+
+export const PROMO_DURATION_IN_FRAMES = 570;

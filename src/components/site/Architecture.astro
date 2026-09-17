@@ -1,18 +1,6 @@
 ---
-const planes = [
-	{
-		name: "Control plane",
-		app: "jawax_api",
-		detail:
-			"Phoenix REST API. Owns Postgres: organizations, channels, keys, webhooks, usage. Runs Oban for jobs, LiveDashboard/Oban Web for internal ops.",
-	},
-	{
-		name: "Media plane",
-		app: "jawax_ingest + jawax_transcode + jawax_sfu",
-		detail:
-			"RTMP listener and Membrane ABR transcode in Elixir; WHIP/WHEP in Go + Pion. Media never touches gRPC — control calls go over gRPC, raw RTP moves over localhost UDP.",
-	},
-];
+const controlItems = ["jawax_api — Phoenix REST", "Postgres", "Oban jobs"];
+const mediaItems = ["jawax_ingest — RTMP", "jawax_transcode — Membrane + FFmpeg", "jawax_sfu — Go + Pion"];
 ---
 
 <section class="border-b border-white/10 bg-card/20">
@@ -24,16 +12,35 @@ const planes = [
 			The media node keeps serving already-live streams off a local
 			stream-key cache even if the control plane goes down for a moment.
 		</p>
-		<div class="mt-10 grid gap-6 md:grid-cols-2">
-			{planes.map((plane) => (
-				<div class="rounded-md border border-white/10 p-6">
-					<p class="font-mono text-sm text-primary">{plane.name}</p>
-					<p class="mt-1 font-mono text-xs text-muted-foreground">{plane.app}</p>
-					<p class="mt-4 text-sm text-muted-foreground">{plane.detail}</p>
-				</div>
-			))}
+
+		<div class="mt-12 flex flex-col items-stretch gap-4 lg:flex-row lg:items-center lg:justify-center">
+			<div class="rounded-md border border-[color-mix(in_oklab,var(--color-plane-control)_55%,transparent)] bg-[color-mix(in_oklab,var(--color-plane-control)_8%,transparent)] p-6 lg:w-72">
+				<p class="font-mono text-xs tracking-[0.15em] uppercase" style="color: var(--color-plane-control)">
+					Control plane
+				</p>
+				<ul class="mt-3 space-y-1.5 text-sm text-foreground">
+					{controlItems.map((item) => <li>{item}</li>)}
+				</ul>
+			</div>
+
+			<div class="flex flex-row items-center gap-2 self-center lg:flex-col">
+				<span class="h-px w-10 bg-white/20 lg:h-10 lg:w-px"></span>
+				<span class="font-mono text-xs whitespace-nowrap text-muted-foreground">gRPC control only</span>
+				<span class="h-px w-10 bg-white/20 lg:h-10 lg:w-px"></span>
+			</div>
+
+			<div class="rounded-md border border-primary/55 bg-primary/8 p-6 lg:w-72">
+				<p class="font-mono text-xs tracking-[0.15em] text-primary uppercase">Media plane</p>
+				<ul class="mt-3 space-y-1.5 text-sm text-foreground">
+					{mediaItems.map((item) => <li>{item}</li>)}
+				</ul>
+			</div>
 		</div>
-		<ul class="mt-8 grid gap-3 text-sm text-muted-foreground sm:grid-cols-3">
+		<p class="mt-4 text-center font-mono text-xs text-muted-foreground">
+			Raw RTP moves over localhost UDP — media never touches gRPC.
+		</p>
+
+		<ul class="mt-10 grid gap-3 text-sm text-muted-foreground sm:grid-cols-3">
 			<li class="rounded border border-white/10 p-4">
 				<span class="text-foreground">Per-channel isolation.</span> One crashed
 				transcode pipeline restarts under OTP without touching any other live channel.

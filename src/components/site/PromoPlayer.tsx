@@ -5,7 +5,7 @@ export default function PromoPlayer() {
 	return (
 		<Player
 			component={PromoComposition}
-			durationInFrames={420}
+			durationInFrames={570}
 			fps={30}
 			compositionWidth={1920}
 			compositionHeight={1080}

@@ -1,21 +1,33 @@
 ---
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 const stack = [
-	"Elixir 1.17 / OTP 26",
-	"Phoenix",
-	"Membrane Framework",
-	"Go 1.26 + Pion",
-	"PostgreSQL",
-	"Oban",
+	{ name: "Elixir 1.17 / OTP 26", role: "Per-channel process isolation — one crashed pipeline never touches another live stream." },
+	{ name: "Phoenix", role: "The control-plane REST API — organizations, channels, keys, webhooks, usage." },
+	{ name: "Membrane Framework", role: "RTMP ingest and ABR transcode, with real LL-HLS packaging." },
+	{ name: "Go 1.26 + Pion", role: "WHIP and WHEP over WebRTC — the same library underlying most production SFUs." },
+	{ name: "PostgreSQL", role: "The only stateful store. No Redis — Oban runs durable jobs straight off it." },
+	{ name: "Oban", role: "Webhook delivery, usage rollups, and license heartbeats, all retried and durable." },
 ];
 ---
 
 <section class="border-b border-white/10">
-	<div class="mx-auto max-w-6xl px-6 py-12">
-		<p class="text-center font-mono text-xs tracking-[0.2em] text-muted-foreground uppercase">
-			Built with
+	<div class="mx-auto max-w-6xl px-6 py-20">
+		<h2 class="text-2xl font-semibold text-foreground md:text-3xl">Built with, not built on top of.</h2>
+		<p class="mt-3 max-w-2xl text-muted-foreground">
+			Every piece here is load-bearing — nothing on this list is decoration.
 		</p>
-		<div class="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 font-mono text-sm text-muted-foreground">
-			{stack.map((item) => <span>{item}</span>)}
+		<div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+			{stack.map((item) => (
+				<Card class="border-white/10 bg-card/40">
+					<CardHeader>
+						<CardTitle class="font-mono text-sm text-primary">{item.name}</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<p class="text-sm text-muted-foreground">{item.role}</p>
+					</CardContent>
+				</Card>
+			))}
 		</div>
 	</div>
 </section>
