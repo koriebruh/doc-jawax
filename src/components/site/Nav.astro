@@ -1,0 +1,26 @@
+---
+import { Button } from "@/components/ui/button";
+---
+
+<header class="sticky top-0 z-50 border-b border-white/10 bg-background/80 backdrop-blur">
+	<div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+		<a href="/" class="flex items-center gap-2 font-mono text-sm text-foreground">
+			<span class="h-2.5 w-2.5 rounded-full bg-primary"></span>
+			jawax
+		</a>
+		<nav class="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
+			<a href="/#not-a-platform" class="hover:text-foreground">Product</a>
+			<a href="/#offerings" class="hover:text-foreground">Offerings</a>
+			<a href="/docs" class="hover:text-foreground">Docs</a>
+			<a href="/#faq" class="hover:text-foreground">FAQ</a>
+		</nav>
+		<div class="flex items-center gap-3">
+			<Button asChild variant="ghost" size="sm" class="hidden sm:inline-flex">
+				<a href="/docs/quickstart-self-host">Quickstart</a>
+			</Button>
+			<Button asChild size="sm">
+				<a href="/#offerings">Talk to us</a>
+			</Button>
+		</div>
+	</div>
+</header>

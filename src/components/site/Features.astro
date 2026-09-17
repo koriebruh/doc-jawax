@@ -1,0 +1,62 @@
+---
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+const features = [
+	{
+		title: "Ingest",
+		items: ["RTMP (Membrane)", "WHIP / WebRTC publish (Go + Pion)"],
+	},
+	{
+		title: "Playback",
+		items: ["HLS", "LL-HLS — sub-second partial segments", "WHEP / WebRTC playback"],
+	},
+	{
+		title: "Recordings",
+		items: [
+			"Incremental multipart upload — a mid-stream crash only loses the tail",
+			"S3-compatible storage: MinIO, R2, or S3, no code change",
+		],
+	},
+	{
+		title: "Webhooks",
+		items: [
+			"stream.started / stream.ended / stream.interrupted / recording.ready",
+			"HMAC-SHA256 signed, SSRF-safe target validation, retried via Oban",
+		],
+	},
+	{
+		title: "Usage & billing",
+		items: [
+			"Hourly usage rollup per organization",
+			"Metered Stripe billing on cloud, flat license on self-host",
+		],
+	},
+	{
+		title: "Auth",
+		items: [
+			"Bearer API keys, hash-stored, per organization",
+			"Short-lived HS256 playback tokens (60s)",
+		],
+	},
+];
+---
+
+<section class="border-b border-white/10">
+	<div class="mx-auto max-w-6xl px-6 py-20">
+		<h2 class="text-2xl font-semibold text-foreground md:text-3xl">What's in the box.</h2>
+		<div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+			{features.map((f) => (
+				<Card class="border-white/10 bg-card/40">
+					<CardHeader>
+						<CardTitle class="font-mono text-sm text-primary">{f.title}</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<ul class="space-y-2 text-sm text-muted-foreground">
+							{f.items.map((item) => <li>{item}</li>)}
+						</ul>
+					</CardContent>
+				</Card>
+			))}
+		</div>
+	</div>
+</section>

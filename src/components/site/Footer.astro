@@ -1,0 +1,18 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer>
+	<div class="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-12 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+		<div class="flex items-center gap-2 font-mono text-foreground">
+			<span class="h-2 w-2 rounded-full bg-primary"></span>
+			jawax
+		</div>
+		<nav class="flex flex-wrap gap-6">
+			<a href="/docs" class="hover:text-foreground">Docs</a>
+			<a href="/docs/api-reference" class="hover:text-foreground">API reference</a>
+			<a href="mailto:hello@jawax.io" class="hover:text-foreground">hello@jawax.io</a>
+		</nav>
+		<p>&copy; {year} Jawax. AGPL-3.0 self-host, v0.1.0.</p>
+	</div>
+</footer>

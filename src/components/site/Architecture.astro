@@ -1,0 +1,51 @@
+---
+const planes = [
+	{
+		name: "Control plane",
+		app: "jawax_api",
+		detail:
+			"Phoenix REST API. Owns Postgres: organizations, channels, keys, webhooks, usage. Runs Oban for jobs, LiveDashboard/Oban Web for internal ops.",
+	},
+	{
+		name: "Media plane",
+		app: "jawax_ingest + jawax_transcode + jawax_sfu",
+		detail:
+			"RTMP listener and Membrane ABR transcode in Elixir; WHIP/WHEP in Go + Pion. Media never touches gRPC — control calls go over gRPC, raw RTP moves over localhost UDP.",
+	},
+];
+---
+
+<section class="border-b border-white/10 bg-card/20">
+	<div class="mx-auto max-w-6xl px-6 py-20">
+		<h2 class="text-2xl font-semibold text-foreground md:text-3xl">
+			Control plane and media plane, split on purpose.
+		</h2>
+		<p class="mt-3 max-w-2xl text-muted-foreground">
+			The media node keeps serving already-live streams off a local
+			stream-key cache even if the control plane goes down for a moment.
+		</p>
+		<div class="mt-10 grid gap-6 md:grid-cols-2">
+			{planes.map((plane) => (
+				<div class="rounded-md border border-white/10 p-6">
+					<p class="font-mono text-sm text-primary">{plane.name}</p>
+					<p class="mt-1 font-mono text-xs text-muted-foreground">{plane.app}</p>
+					<p class="mt-4 text-sm text-muted-foreground">{plane.detail}</p>
+				</div>
+			))}
+		</div>
+		<ul class="mt-8 grid gap-3 text-sm text-muted-foreground sm:grid-cols-3">
+			<li class="rounded border border-white/10 p-4">
+				<span class="text-foreground">Per-channel isolation.</span> One crashed
+				transcode pipeline restarts under OTP without touching any other live channel.
+			</li>
+			<li class="rounded border border-white/10 p-4">
+				<span class="text-foreground">Drain before deploy.</span> New connections
+				stop, a 30s grace window runs, then the node restarts.
+			</li>
+			<li class="rounded border border-white/10 p-4">
+				<span class="text-foreground">No Redis.</span> Postgres-backed jobs (Oban),
+				PubSub for ephemeral coordination. One less thing to operate.
+			</li>
+		</ul>
+	</div>
+</section>

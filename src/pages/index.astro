@@ -1,11 +1,31 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/site/Nav.astro";
+import Hero from "../components/site/Hero.astro";
+import NotAPlatform from "../components/site/NotAPlatform.astro";
+import Architecture from "../components/site/Architecture.astro";
+import Features from "../components/site/Features.astro";
+import PromoVideo from "../components/site/PromoVideo.astro";
+import Offerings from "../components/site/Offerings.astro";
+import BuiltWith from "../components/site/BuiltWith.astro";
+import FaqSection from "../components/site/FaqSection.astro";
+import Footer from "../components/site/Footer.astro";
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+	title="Jawax — the live-streaming engine you embed"
+	description="Jawax is a live-streaming engine you embed into your own product: RTMP/WHIP in, HLS/LL-HLS/WHEP out. Self-host under AGPL-3.0 or let us run the cloud media plane."
+>
+	<Nav />
+	<main>
+		<Hero />
+		<NotAPlatform />
+		<Architecture />
+		<Features />
+		<PromoVideo />
+		<Offerings />
+		<BuiltWith />
+		<FaqSection />
+	</main>
+	<Footer />
 </Layout>

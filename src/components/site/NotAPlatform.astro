@@ -1,0 +1,42 @@
+---
+const doesNot = ["Chat", "Discovery / recommendations", "A viewer-facing app"];
+const does = ["Ingest", "Transcode to an ABR ladder", "Deliver HLS, LL-HLS, WHEP"];
+---
+
+<section id="not-a-platform" class="border-b border-white/10">
+	<div class="mx-auto max-w-6xl px-6 py-20">
+		<h2 class="text-2xl font-semibold text-foreground md:text-3xl">
+			An engine you embed, not a platform you visit.
+		</h2>
+		<p class="mt-3 max-w-2xl text-muted-foreground">
+			Jawax has no opinion about your product. It moves video in and out
+			correctly, and stays out of the way of everything else.
+		</p>
+		<div class="mt-10 grid gap-8 sm:grid-cols-2">
+			<div class="rounded-md border border-white/10 p-6">
+				<p class="font-mono text-xs tracking-[0.15em] text-primary uppercase">Jawax does</p>
+				<ul class="mt-4 space-y-2 text-sm text-foreground">
+					{does.map((item) => (
+						<li class="flex items-center gap-2">
+							<span class="h-1 w-1 rounded-full bg-primary"></span>
+							{item}
+						</li>
+					))}
+				</ul>
+			</div>
+			<div class="rounded-md border border-white/10 p-6 opacity-70">
+				<p class="font-mono text-xs tracking-[0.15em] text-muted-foreground uppercase">
+					You build
+				</p>
+				<ul class="mt-4 space-y-2 text-sm text-muted-foreground">
+					{doesNot.map((item) => (
+						<li class="flex items-center gap-2">
+							<span class="h-1 w-1 rounded-full bg-muted-foreground"></span>
+							{item}
+						</li>
+					))}
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>

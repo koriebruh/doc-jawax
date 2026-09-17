@@ -1,0 +1,48 @@
+---
+import Layout from "./Layout.astro";
+import Nav from "../components/site/Nav.astro";
+import Footer from "../components/site/Footer.astro";
+import { getCollection } from "astro:content";
+
+interface Props {
+	title: string;
+	description: string;
+	currentId: string;
+}
+
+const { title, description, currentId } = Astro.props;
+const entries = (await getCollection("docs")).sort((a, b) => a.data.order - b.data.order);
+
+function hrefFor(id: string) {
+	return id === "index" ? "/docs" : `/docs/${id}`;
+}
+---
+
+<Layout title={`${title} · Jawax docs`} description={description}>
+	<Nav />
+	<div class="mx-auto flex max-w-6xl gap-10 px-6 py-12">
+		<aside class="hidden w-56 shrink-0 md:block">
+			<nav class="sticky top-24 space-y-1 text-sm">
+				{entries.map((entry) => (
+					<a
+						href={hrefFor(entry.id)}
+						class:list={[
+							"block rounded px-3 py-1.5",
+							entry.id === currentId
+								? "bg-secondary font-medium text-foreground"
+								: "text-muted-foreground hover:text-foreground",
+						]}
+					>
+						{entry.data.title}
+					</a>
+				))}
+			</nav>
+		</aside>
+		<main class="min-w-0 flex-1 pb-24">
+			<article class="prose prose-invert prose-headings:font-semibold prose-a:text-primary max-w-none">
+				<slot />
+			</article>
+		</main>
+	</div>
+	<Footer />
+</Layout>

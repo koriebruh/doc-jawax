@@ -1,0 +1,92 @@
+---
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+const tiers = [
+	{
+		name: "Open source",
+		tag: "Self-host",
+		price: "AGPL-3.0",
+		detail:
+			"Run the full engine on your own infrastructure. docker-compose up brings up Postgres, the API, and the media node together. Gated by a license key with a 7-day fail-open grace period — a network blip never bricks a live stream.",
+		bullets: [
+			"Full source, AGPL-3.0",
+			"Bring your own S3-compatible storage (MinIO, R2, S3)",
+			"You own uptime and scaling",
+		],
+		cta: { label: "Read the quickstart", href: "/docs/quickstart-self-host" },
+		featured: false,
+	},
+	{
+		name: "Cloud managed",
+		tag: "We run it",
+		price: "Usage-based",
+		detail:
+			"We operate the control plane and media plane on split, dedicated VPS instances. Metered billing through Stripe. You get an API and a stream key, we handle everything behind it.",
+		bullets: [
+			"Control plane and media plane on separate hosts",
+			"Metered usage billing",
+			"No infrastructure for you to run",
+		],
+		cta: { label: "Talk to sales", href: "mailto:hello@jawax.io" },
+		featured: true,
+	},
+	{
+		name: "Bare metal",
+		tag: "Coming soon",
+		price: "—",
+		detail:
+			"Dedicated hardware media nodes for teams that need guaranteed capacity or data residency the shared cloud plane can't offer. Not available yet.",
+		bullets: [
+			"Dedicated media-node hardware",
+			"For capacity and residency requirements",
+			"In planning — not built today",
+		],
+		cta: null,
+		featured: false,
+	},
+];
+---
+
+<section id="offerings" class="border-b border-white/10 bg-card/20">
+	<div class="mx-auto max-w-6xl px-6 py-20">
+		<h2 class="text-2xl font-semibold text-foreground md:text-3xl">Three ways to run it.</h2>
+		<p class="mt-3 max-w-2xl text-muted-foreground">
+			Same engine underneath. The difference is who operates the media plane.
+		</p>
+		<div class="mt-10 grid gap-6 lg:grid-cols-3">
+			{tiers.map((tier) => (
+				<div
+					class:list={[
+						"flex flex-col rounded-md border p-6",
+						tier.featured ? "border-primary/60 bg-card/60" : "border-white/10",
+					]}
+				>
+					<div class="flex items-center justify-between">
+						<h3 class="font-mono text-lg text-foreground">{tier.name}</h3>
+						<Badge variant={tier.featured ? "default" : "secondary"}>{tier.tag}</Badge>
+					</div>
+					<p class="mt-4 font-mono text-2xl text-primary">{tier.price}</p>
+					<p class="mt-4 text-sm text-muted-foreground">{tier.detail}</p>
+					<ul class="mt-6 flex-1 space-y-2 text-sm text-muted-foreground">
+						{tier.bullets.map((b) => (
+							<li class="flex items-start gap-2">
+								<span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-muted-foreground"></span>
+								{b}
+							</li>
+						))}
+					</ul>
+					{tier.cta ? (
+						<Button asChild class="mt-6" variant={tier.featured ? "default" : "outline"}>
+							<a href={tier.cta.href}>{tier.cta.label}</a>
+						</Button>
+					) : (
+						<Button class="mt-6" variant="outline" disabled>
+							Not available yet
+						</Button>
+					)}
+				</div>
+			))}
+		</div>
+	</div>
+</section>
