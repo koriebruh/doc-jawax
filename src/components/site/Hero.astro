@@ -3,7 +3,13 @@ import ApiPreview from "./ApiPreview";
 import { buttonVariants } from "@/components/ui/button";
 ---
 
-<section class="bg-signal-glow relative border-b border-border">
+<section class="bg-signal-glow relative overflow-hidden border-b border-border">
+	<img
+		src="/hero-blob.svg"
+		alt=""
+		aria-hidden="true"
+		class="pointer-events-none absolute inset-0 -z-10 h-full w-full object-cover"
+	/>
 	<div class="relative mx-auto grid max-w-6xl gap-12 px-6 py-24 md:grid-cols-2 md:items-center md:py-32">
 		<div>
 			<h1 class="text-4xl leading-[1.05] font-bold text-balance text-foreground md:text-5xl lg:text-6xl">

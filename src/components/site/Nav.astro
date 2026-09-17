@@ -1,31 +1,42 @@
 ---
 import { buttonVariants } from "@/components/ui/button";
 import MobileNav from "./MobileNav";
+import { ArrowRight } from "lucide-react";
 ---
 
-<header class="sticky top-0 z-50 border-b border-transparent bg-background/80 backdrop-blur-md [border-image:linear-gradient(to_right,transparent,var(--color-primary)_35%,var(--color-delivery)_65%,transparent)_1]">
-	<div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-3.5">
-		<a href="/" class="flex items-center gap-2 font-mono text-sm text-foreground">
-			<img src="/logo.svg" alt="" width="24" height="24" class="h-6 w-6 rounded-md" />
-			jawax
-		</a>
-		<nav class="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
-			<a href="/#not-a-platform" class="transition-colors hover:text-foreground">Product</a>
-			<a href="/#offerings" class="transition-colors hover:text-foreground">Offerings</a>
-			<a href="/docs" class="transition-colors hover:text-foreground">Docs</a>
-			<a href="/#faq" class="transition-colors hover:text-foreground">FAQ</a>
-		</nav>
-		<div class="flex items-center gap-2">
-			<a
-				href="/docs/quickstart-self-host"
-				class:list={[buttonVariants({ variant: "ghost", size: "sm" }), "hidden sm:inline-flex"]}
-			>
-				Quickstart
+<div class="sticky top-0 z-50">
+	<a
+		href="/docs/architecture"
+		class="flex items-center justify-center gap-2 bg-[#121214] px-4 py-2 text-center text-xs text-white/80 transition-colors hover:text-white"
+	>
+		<span class="h-1.5 w-1.5 shrink-0 rounded-full bg-primary"></span>
+		v0.1.0 — pre-1.0, actively built in the open. See how it's architected
+		<ArrowRight className="h-3 w-3 shrink-0" />
+	</a>
+	<header class="border-b border-transparent bg-background/90 shadow-[0_1px_0_0_rgba(0,0,0,0.06)] backdrop-blur-md [border-image:linear-gradient(to_right,transparent,var(--color-primary)_35%,var(--color-delivery)_65%,transparent)_1]">
+		<div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
+			<a href="/" class="flex items-center gap-2.5 font-mono text-base font-medium text-foreground">
+				<img src="/logo.svg" alt="" width="28" height="28" class="h-7 w-7 rounded-lg" />
+				jawax
 			</a>
-			<a href="/#offerings" class:list={[buttonVariants({ size: "sm" }), "hidden sm:inline-flex"]}>
-				Talk to us
-			</a>
-			<MobileNav client:load />
+			<nav class="hidden items-center gap-1 text-sm font-medium text-muted-foreground md:flex">
+				<a href="/#not-a-platform" class="rounded-md px-3 py-2 transition-colors hover:bg-accent hover:text-foreground">Product</a>
+				<a href="/#offerings" class="rounded-md px-3 py-2 transition-colors hover:bg-accent hover:text-foreground">Offerings</a>
+				<a href="/docs" class="rounded-md px-3 py-2 transition-colors hover:bg-accent hover:text-foreground">Docs</a>
+				<a href="/#faq" class="rounded-md px-3 py-2 transition-colors hover:bg-accent hover:text-foreground">FAQ</a>
+			</nav>
+			<div class="flex items-center gap-2">
+				<a
+					href="/docs/quickstart-self-host"
+					class:list={[buttonVariants({ variant: "ghost", size: "sm" }), "hidden sm:inline-flex"]}
+				>
+					Quickstart
+				</a>
+				<a href="/#offerings" class:list={[buttonVariants({ size: "sm" }), "hidden sm:inline-flex"]}>
+					Talk to us
+				</a>
+				<MobileNav client:load />
+			</div>
 		</div>
-	</div>
-</header>
+	</header>
+</div>
