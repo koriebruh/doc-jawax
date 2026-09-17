@@ -3,7 +3,7 @@ const controlItems = ["jawax_api — Phoenix REST", "Postgres", "Oban jobs"];
 const mediaItems = ["jawax_ingest — RTMP", "jawax_transcode — Membrane + FFmpeg", "jawax_sfu — Go + Pion"];
 ---
 
-<section class="border-b border-white/10 bg-card/20">
+<section class="reveal border-b border-white/10 bg-card/20">
 	<div class="mx-auto max-w-6xl px-6 py-20">
 		<h2 class="text-2xl font-semibold text-foreground md:text-3xl">
 			Control plane and media plane, split on purpose.
@@ -23,21 +23,29 @@ const mediaItems = ["jawax_ingest — RTMP", "jawax_transcode — Membrane + FFm
 				</ul>
 			</div>
 
-			<div class="flex flex-row items-center gap-2 self-center lg:flex-col">
-				<span class="h-px w-10 bg-white/20 lg:h-10 lg:w-px"></span>
-				<span class="font-mono text-xs whitespace-nowrap text-muted-foreground">gRPC control only</span>
-				<span class="h-px w-10 bg-white/20 lg:h-10 lg:w-px"></span>
+			<div class="flex flex-row items-center gap-3 self-center lg:flex-col">
+				<span class="h-px w-8 bg-white/15 lg:h-8 lg:w-px"></span>
+				<div class="flex items-center gap-1.5">
+					<span class="heartbeat-dot h-1.5 w-1.5 rounded-full" style="background-color: var(--color-plane-control)"></span>
+					<span class="heartbeat-dot h-1.5 w-1.5 rounded-full bg-white/50" style="animation-delay: 260ms"></span>
+					<span class="heartbeat-dot h-1.5 w-1.5 rounded-full" style="background-color: var(--color-plane-media); animation-delay: 520ms"></span>
+				</div>
+				<span class="font-mono text-xs whitespace-nowrap text-muted-foreground">Postgres · license heartbeat</span>
+				<span class="h-px w-8 bg-white/15 lg:h-8 lg:w-px"></span>
 			</div>
 
-			<div class="rounded-md border border-primary/55 bg-primary/8 p-6 lg:w-72">
-				<p class="font-mono text-xs tracking-[0.15em] text-primary uppercase">Media plane</p>
+			<div class="rounded-md border border-[color-mix(in_oklab,var(--color-plane-media)_55%,transparent)] bg-[color-mix(in_oklab,var(--color-plane-media)_8%,transparent)] p-6 lg:w-72">
+				<p class="font-mono text-xs tracking-[0.15em] uppercase" style="color: var(--color-plane-media)">
+					Media plane
+				</p>
 				<ul class="mt-3 space-y-1.5 text-sm text-foreground">
 					{mediaItems.map((item) => <li>{item}</li>)}
 				</ul>
 			</div>
 		</div>
 		<p class="mt-4 text-center font-mono text-xs text-muted-foreground">
-			Raw RTP moves over localhost UDP — media never touches gRPC.
+			gRPC is internal to the media plane — jawax_sfu calls jawax_transcode for control only.
+			Raw RTP still moves over localhost UDP, never gRPC.
 		</p>
 
 		<ul class="mt-10 grid gap-3 text-sm text-muted-foreground sm:grid-cols-3">

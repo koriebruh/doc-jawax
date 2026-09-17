@@ -10,7 +10,7 @@ const nodes = [
 
 export default function SignalPath() {
 	return (
-		<div className="rounded-md border border-white/10 bg-card/40 p-6 font-mono">
+		<div className="glow-ring rounded-md border border-white/10 bg-card/40 p-6 font-mono">
 			<div className="mb-5 flex items-center justify-between">
 				<span className="text-xs tracking-[0.2em] text-muted-foreground uppercase">
 					Signal path

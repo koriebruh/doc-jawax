@@ -1,17 +1,20 @@
 ---
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { AudioWaveform, ListChecks } from "lucide-react";
+import { siElixir, siPhoenixframework, siGo, siPostgresql } from "simple-icons";
+import BrandIcon from "./BrandIcon.astro";
 
 const stack = [
-	{ name: "Elixir 1.17 / OTP 26", role: "Per-channel process isolation — one crashed pipeline never touches another live stream." },
-	{ name: "Phoenix", role: "The control-plane REST API — organizations, channels, keys, webhooks, usage." },
-	{ name: "Membrane Framework", role: "RTMP ingest and ABR transcode, with real LL-HLS packaging." },
-	{ name: "Go 1.26 + Pion", role: "WHIP and WHEP over WebRTC — the same library underlying most production SFUs." },
-	{ name: "PostgreSQL", role: "The only stateful store. No Redis — Oban runs durable jobs straight off it." },
-	{ name: "Oban", role: "Webhook delivery, usage rollups, and license heartbeats, all retried and durable." },
+	{ name: "Elixir 1.17 / OTP 26", brand: siElixir.path, role: "Per-channel process isolation — one crashed pipeline never touches another live stream." },
+	{ name: "Phoenix", brand: siPhoenixframework.path, role: "The control-plane REST API — organizations, channels, keys, webhooks, usage." },
+	{ name: "Membrane Framework", icon: AudioWaveform, role: "RTMP ingest and ABR transcode, with real LL-HLS packaging." },
+	{ name: "Go 1.26 + Pion", brand: siGo.path, role: "WHIP and WHEP over WebRTC — the same library underlying most production SFUs." },
+	{ name: "PostgreSQL", brand: siPostgresql.path, role: "The only stateful store. No Redis — Oban runs durable jobs straight off it." },
+	{ name: "Oban", icon: ListChecks, role: "Webhook delivery, usage rollups, and license heartbeats, all retried and durable." },
 ];
 ---
 
-<section class="border-b border-white/10">
+<section class="reveal border-b border-white/10">
 	<div class="mx-auto max-w-6xl px-6 py-20">
 		<h2 class="text-2xl font-semibold text-foreground md:text-3xl">Built with, not built on top of.</h2>
 		<p class="mt-3 max-w-2xl text-muted-foreground">
@@ -19,9 +22,12 @@ const stack = [
 		</p>
 		<div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			{stack.map((item) => (
-				<Card class="border-white/10 bg-card/40">
+				<Card className="card-hover border-white/10 bg-card/40">
 					<CardHeader>
-						<CardTitle class="font-mono text-sm text-primary">{item.name}</CardTitle>
+						<CardTitle className="flex items-center gap-2 font-mono text-sm text-primary">
+							{item.brand ? <BrandIcon path={item.brand} class="h-4 w-4" /> : <item.icon className="h-4 w-4" />}
+							{item.name}
+						</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<p class="text-sm text-muted-foreground">{item.role}</p>

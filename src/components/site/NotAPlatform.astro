@@ -1,9 +1,11 @@
 ---
+import { Check, ArrowUpRight } from "lucide-react";
+
 const doesNot = ["Chat", "Discovery / recommendations", "A viewer-facing app"];
 const does = ["Ingest", "Transcode to an ABR ladder", "Deliver HLS, LL-HLS, WHEP"];
 ---
 
-<section id="not-a-platform" class="border-b border-white/10">
+<section id="not-a-platform" class="reveal border-b border-white/10">
 	<div class="mx-auto max-w-6xl px-6 py-20">
 		<h2 class="text-2xl font-semibold text-foreground md:text-3xl">
 			An engine you embed, not a platform you visit.
@@ -18,7 +20,7 @@ const does = ["Ingest", "Transcode to an ABR ladder", "Deliver HLS, LL-HLS, WHEP
 				<ul class="mt-4 space-y-2 text-sm text-foreground">
 					{does.map((item) => (
 						<li class="flex items-center gap-2">
-							<span class="h-1 w-1 rounded-full bg-primary"></span>
+							<Check className="h-4 w-4 shrink-0 text-primary" />
 							{item}
 						</li>
 					))}
@@ -31,7 +33,7 @@ const does = ["Ingest", "Transcode to an ABR ladder", "Deliver HLS, LL-HLS, WHEP
 				<ul class="mt-4 space-y-2 text-sm text-muted-foreground">
 					{doesNot.map((item) => (
 						<li class="flex items-center gap-2">
-							<span class="h-1 w-1 rounded-full bg-muted-foreground"></span>
+							<ArrowUpRight className="h-4 w-4 shrink-0" />
 							{item}
 						</li>
 					))}

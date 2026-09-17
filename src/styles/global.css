@@ -15,6 +15,8 @@
     --color-live-foreground: var(--live-foreground);
     --color-plane-control: var(--plane-control);
     --color-plane-media: var(--plane-media);
+    --color-gold: var(--gold);
+    --color-gold-foreground: var(--gold-foreground);
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -57,42 +59,44 @@
 
 :root {
     color-scheme: dark;
-    --background: #0a0c0e;
-    --foreground: #f2f4f5;
-    --card: #12151a;
-    --card-foreground: #f2f4f5;
-    --popover: #12151a;
-    --popover-foreground: #f2f4f5;
-    --primary: #f2a93c;
-    --primary-foreground: #14110a;
-    --secondary: #171b20;
-    --secondary-foreground: #f2f4f5;
-    --muted: #14171b;
-    --muted-foreground: #8b939b;
-    --accent: #171b20;
-    --accent-foreground: #f2f4f5;
-    --destructive: #e5484d;
+    --background: #0b0b1f;
+    --foreground: #f7f7fc;
+    --card: #16162f;
+    --card-foreground: #f7f7fc;
+    --popover: #16162f;
+    --popover-foreground: #f7f7fc;
+    --primary: #8b5cf6;
+    --primary-foreground: #ffffff;
+    --secondary: #1e1b3f;
+    --secondary-foreground: #f7f7fc;
+    --muted: #1a1a35;
+    --muted-foreground: #9a97b8;
+    --accent: #1e1b3f;
+    --accent-foreground: #f7f7fc;
+    --destructive: #f43f5e;
     --border: oklch(1 0 0 / 10%);
     --input: oklch(1 0 0 / 15%);
-    --ring: #f2a93c;
-    --live: #ff3b3b;
+    --ring: #8b5cf6;
+    --live: #ff3b6f;
     --live-foreground: #ffffff;
-    --plane-media: #f2a93c;
-    --plane-control: #6ea8fe;
-    --chart-1: #f2a93c;
-    --chart-2: #8b939b;
-    --chart-3: #5b6470;
-    --chart-4: #3a4048;
-    --chart-5: #24282e;
-    --radius: 0.375rem;
-    --sidebar: #0a0c0e;
-    --sidebar-foreground: #f2f4f5;
-    --sidebar-primary: #f2a93c;
-    --sidebar-primary-foreground: #14110a;
-    --sidebar-accent: #171b20;
-    --sidebar-accent-foreground: #f2f4f5;
+    --gold: #fbbf24;
+    --gold-foreground: #241c02;
+    --plane-media: #fbbf24;
+    --plane-control: #8b5cf6;
+    --chart-1: #8b5cf6;
+    --chart-2: #fbbf24;
+    --chart-3: #9a97b8;
+    --chart-4: #4c1d95;
+    --chart-5: #292552;
+    --radius: 0.625rem;
+    --sidebar: #0b0b1f;
+    --sidebar-foreground: #f7f7fc;
+    --sidebar-primary: #8b5cf6;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #1e1b3f;
+    --sidebar-accent-foreground: #f7f7fc;
     --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: #f2a93c;
+    --sidebar-ring: #8b5cf6;
 }
 
 @layer base {
@@ -118,8 +122,8 @@
     z-index: -1;
     pointer-events: none;
     background-image:
-        radial-gradient(circle at 12% 8%, oklch(0.79 0.14 75 / 16%), transparent 40%),
-        radial-gradient(circle at 88% 42%, oklch(0.7 0.15 255 / 10%), transparent 45%),
+        radial-gradient(circle at 15% 10%, oklch(0.63 0.24 293 / 26%), transparent 42%),
+        radial-gradient(circle at 85% 38%, oklch(0.83 0.15 85 / 16%), transparent 45%),
         linear-gradient(
             oklch(1 0 0 / 4%) 1px,
             transparent 1px
@@ -132,4 +136,53 @@
     background-size: auto, auto, 48px 48px, 48px 48px;
     background-position: 0 0, 0 0, -1px -1px, -1px -1px;
     mask-image: linear-gradient(to bottom, black, transparent);
+}
+
+.glow-ring {
+    box-shadow: 0 0 0 1px oklch(1 0 0 / 8%), 0 30px 60px -20px oklch(0.63 0.24 293 / 35%);
+}
+
+.card-hover {
+    transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+}
+.card-hover:hover {
+    border-color: oklch(0.63 0.24 293 / 45%);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px -20px oklch(0.63 0.24 293 / 40%);
+}
+@media (prefers-reduced-motion: reduce) {
+    .card-hover:hover {
+        transform: none;
+    }
+}
+
+@keyframes heartbeat-pulse {
+    0%, 100% { opacity: 0.25; transform: scale(0.85); }
+    50% { opacity: 1; transform: scale(1.15); }
+}
+.heartbeat-dot {
+    animation: heartbeat-pulse 1.8s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+    .heartbeat-dot {
+        animation: none;
+        opacity: 1;
+    }
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 700ms ease, transform 700ms ease;
+}
+.reveal.is-visible {
+    opacity: 1;
+    transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
 }

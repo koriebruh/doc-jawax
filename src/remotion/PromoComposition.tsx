@@ -10,12 +10,12 @@ import {
 import "@fontsource-variable/plus-jakarta-sans";
 import "@fontsource-variable/geist-mono";
 
-const INK = "#0a0c0e";
-const PAPER = "#f2f4f5";
-const AMBER = "#f2a93c";
-const BLUE = "#6ea8fe";
-const MUTED = "#7a828c";
-const LIVE = "#ff3b3b";
+const INK = "#0b0b1f";
+const PAPER = "#f7f7fc";
+const PRIMARY = "#8b5cf6";
+const GOLD = "#fbbf24";
+const MUTED = "#9a97b8";
+const LIVE = "#ff3b6f";
 
 const sans = "'Plus Jakarta Sans Variable', sans-serif";
 const mono = "'Geist Mono Variable', ui-monospace, monospace";
@@ -31,7 +31,7 @@ function Backdrop() {
 		<AbsoluteFill
 			style={{
 				backgroundColor: INK,
-				backgroundImage: `radial-gradient(circle at 14% 12%, ${hexA(AMBER, 0.1)}, transparent 42%), radial-gradient(circle at 86% 78%, ${hexA(BLUE, 0.08)}, transparent 46%)`,
+				backgroundImage: `radial-gradient(circle at 14% 12%, ${hexA(PRIMARY, 0.14)}, transparent 42%), radial-gradient(circle at 86% 78%, ${hexA(GOLD, 0.1)}, transparent 46%)`,
 			}}
 		/>
 	);
@@ -85,7 +85,7 @@ function LiveBadge({ style }: { style?: React.CSSProperties }) {
 function Wordmark({ scale = 1 }: { scale?: number }) {
 	return (
 		<div style={{ display: "flex", alignItems: "center", gap: 14 * scale, fontFamily: mono, fontSize: 40 * scale, color: PAPER, letterSpacing: 1 }}>
-			<div style={{ width: 14 * scale, height: 14 * scale, borderRadius: 999, backgroundColor: AMBER }} />
+			<div style={{ width: 14 * scale, height: 14 * scale, borderRadius: 999, backgroundColor: PRIMARY }} />
 			jawax
 		</div>
 	);
@@ -126,7 +126,7 @@ function SceneTitle() {
 function WaveBar({ i }: { i: number }) {
 	const frame = useCurrentFrame();
 	const h = 6 + Math.abs(Math.sin(frame / 5 + i * 1.3)) * 22;
-	return <div style={{ width: 4, height: h, borderRadius: 2, backgroundColor: AMBER, opacity: 0.8 }} />;
+	return <div style={{ width: 4, height: h, borderRadius: 2, backgroundColor: GOLD, opacity: 0.8 }} />;
 }
 
 function SceneLiveSignal() {
@@ -157,7 +157,7 @@ function SceneLiveSignal() {
 					style={{
 						position: "absolute",
 						inset: 0,
-						background: `linear-gradient(to bottom, transparent, ${hexA(AMBER, 0.18)}, transparent)`,
+						background: `linear-gradient(to bottom, transparent, ${hexA(GOLD, 0.18)}, transparent)`,
 						transform: `translateY(${sweep - 30}%)`,
 					}}
 				/>
@@ -185,7 +185,7 @@ function Node({ label, sub, delay, accent = false }: { label: string; sub?: stri
 			style={{
 				opacity: progress,
 				transform: `translateY(${(1 - progress) * 16}px)`,
-				border: `1px solid ${accent ? AMBER : hexA(PAPER, 0.16)}`,
+				border: `1px solid ${accent ? PRIMARY : hexA(PAPER, 0.16)}`,
 				borderRadius: 10,
 				padding: "20px 28px",
 				minWidth: 220,
@@ -194,7 +194,7 @@ function Node({ label, sub, delay, accent = false }: { label: string; sub?: stri
 				backgroundColor: hexA(PAPER, 0.02),
 			}}
 		>
-			<div style={{ fontFamily: mono, fontSize: 26, color: accent ? AMBER : PAPER, letterSpacing: 1 }}>{label}</div>
+			<div style={{ fontFamily: mono, fontSize: 26, color: accent ? PRIMARY : PAPER, letterSpacing: 1 }}>{label}</div>
 			{sub ? <div style={{ fontFamily: sans, fontSize: 15, color: MUTED, marginTop: 6 }}>{sub}</div> : null}
 		</div>
 	);
@@ -239,7 +239,7 @@ function LadderBar({ label, kbps, height, delay }: { label: string; kbps: string
 					width: 70,
 					height: height * progress,
 					borderRadius: 6,
-					background: `linear-gradient(to top, ${AMBER}, ${hexA(AMBER, 0.35)})`,
+					background: `linear-gradient(to top, ${GOLD}, ${hexA(GOLD, 0.35)})`,
 				}}
 			/>
 			<div style={{ fontFamily: mono, fontSize: 16, color: PAPER }}>{label}</div>
@@ -290,6 +290,24 @@ function PlaneBox({ title, color, items, delay, align }: { title: string; color:
 	);
 }
 
+function HeartbeatDot({ color, phase }: { color: string; phase: number }) {
+	const frame = useCurrentFrame();
+	const t = ((frame + phase) % 54) / 54;
+	const pulse = Math.max(0, Math.sin(t * Math.PI));
+	return (
+		<div
+			style={{
+				width: 6,
+				height: 6,
+				borderRadius: 999,
+				backgroundColor: color,
+				opacity: 0.25 + pulse * 0.75,
+				transform: `scale(${0.85 + pulse * 0.3})`,
+			}}
+		/>
+	);
+}
+
 function SceneArchitecture() {
 	const link = useSpringIn(20);
 	return (
@@ -298,13 +316,18 @@ function SceneArchitecture() {
 				Control plane and media plane, split on purpose.
 			</div>
 			<div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-				<PlaneBox title="Control plane" color={BLUE} items={["jawax_api", "Postgres", "Oban jobs"]} delay={0} align="left" />
-				<div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, opacity: link }}>
-					<div style={{ width: 48, height: 1, backgroundColor: hexA(PAPER, 0.3) }} />
-					<span style={{ fontFamily: mono, fontSize: 12, color: MUTED }}>gRPC</span>
-					<div style={{ width: 48, height: 1, backgroundColor: hexA(PAPER, 0.3) }} />
+				<PlaneBox title="Control plane" color={PRIMARY} items={["jawax_api", "Postgres", "Oban jobs"]} delay={0} align="left" />
+				<div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, opacity: link }}>
+					<div style={{ width: 32, height: 1, backgroundColor: hexA(PAPER, 0.25) }} />
+					<div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+						<HeartbeatDot color={PRIMARY} phase={0} />
+						<HeartbeatDot color={hexA(PAPER, 0.5)} phase={18} />
+						<HeartbeatDot color={GOLD} phase={36} />
+					</div>
+					<span style={{ fontFamily: mono, fontSize: 12, color: MUTED, whiteSpace: "nowrap" }}>Postgres · heartbeat</span>
+					<div style={{ width: 32, height: 1, backgroundColor: hexA(PAPER, 0.25) }} />
 				</div>
-				<PlaneBox title="Media plane" color={AMBER} items={["jawax_ingest", "jawax_transcode", "jawax_sfu"]} delay={10} align="right" />
+				<PlaneBox title="Media plane" color={GOLD} items={["jawax_ingest", "jawax_transcode", "jawax_sfu"]} delay={10} align="right" />
 			</div>
 			<div style={{ marginTop: 28, fontFamily: sans, fontSize: 15, color: MUTED, opacity: link }}>
 				A control-plane blip never touches a stream that's already live.
@@ -321,7 +344,7 @@ function OfferingChip({ label, note, delay, dim = false }: { label: string; note
 			style={{
 				opacity: progress * (dim ? 0.55 : 1),
 				transform: `translateY(${(1 - progress) * 16}px)`,
-				border: `1px solid ${dim ? hexA(PAPER, 0.12) : hexA(AMBER, 0.5)}`,
+				border: `1px solid ${dim ? hexA(PAPER, 0.12) : hexA(PRIMARY, 0.5)}`,
 				borderRadius: 10,
 				padding: "24px 30px",
 				width: 280,
@@ -353,7 +376,7 @@ function SceneEnd() {
 			<div style={{ opacity: progress }}>
 				<Wordmark scale={1.8} />
 			</div>
-			<div style={{ opacity: progress, fontFamily: mono, fontSize: 18, color: AMBER, marginTop: 20, letterSpacing: 1 }}>
+			<div style={{ opacity: progress, fontFamily: mono, fontSize: 18, color: PRIMARY, marginTop: 20, letterSpacing: 1 }}>
 				Read the docs &rarr;
 			</div>
 		</AbsoluteFill>
