@@ -1,26 +1,50 @@
 ---
 import { Button } from "@/components/ui/button";
+import { Sun, Moon } from "lucide-react";
+import MobileNav from "./MobileNav";
 ---
 
-<header class="sticky top-0 z-50 border-b border-white/10 bg-background/80 backdrop-blur">
-	<div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-		<a href="/" class="flex items-center gap-2 font-mono text-sm text-foreground">
-			<span class="h-2.5 w-2.5 rounded-full bg-primary"></span>
+<header class="sticky top-0 z-50 border-b border-border/80 bg-background/75 backdrop-blur-md">
+	<div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-3.5">
+		<a href="/" class="group flex items-center gap-2.5 font-mono text-sm text-foreground">
+			<span class="relative flex h-2.5 w-2.5">
+				<span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60 group-hover:opacity-100"></span>
+				<span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary"></span>
+			</span>
 			jawax
 		</a>
 		<nav class="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
-			<a href="/#not-a-platform" class="hover:text-foreground">Product</a>
-			<a href="/#offerings" class="hover:text-foreground">Offerings</a>
-			<a href="/docs" class="hover:text-foreground">Docs</a>
-			<a href="/#faq" class="hover:text-foreground">FAQ</a>
+			<a href="/#not-a-platform" class="transition-colors hover:text-foreground">Product</a>
+			<a href="/#offerings" class="transition-colors hover:text-foreground">Offerings</a>
+			<a href="/docs" class="transition-colors hover:text-foreground">Docs</a>
+			<a href="/#faq" class="transition-colors hover:text-foreground">FAQ</a>
 		</nav>
-		<div class="flex items-center gap-3">
+		<div class="flex items-center gap-2">
+			<button
+				id="theme-toggle"
+				aria-label="Toggle color theme"
+				class="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+			>
+				<Sun className="hidden h-4 w-4 dark:block" />
+				<Moon className="block h-4 w-4 dark:hidden" />
+			</button>
 			<Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
 				<a href="/docs/quickstart-self-host">Quickstart</a>
 			</Button>
-			<Button asChild size="sm">
+			<Button asChild size="sm" className="hidden sm:inline-flex">
 				<a href="/#offerings">Talk to us</a>
 			</Button>
+			<MobileNav client:load />
 		</div>
 	</div>
 </header>
+
+<script>
+	const toggle = document.getElementById("theme-toggle");
+	toggle?.addEventListener("click", () => {
+		const isDark = document.documentElement.classList.toggle("dark");
+		try {
+			localStorage.setItem("theme", isDark ? "dark" : "light");
+		} catch (e) {}
+	});
+</script>

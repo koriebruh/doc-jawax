@@ -49,18 +49,19 @@ const tiers = [
 ];
 ---
 
-<section id="offerings" class="reveal border-b border-white/10 bg-card/20">
+<section id="offerings" class="border-b border-border bg-card/20">
 	<div class="mx-auto max-w-6xl px-6 py-20">
 		<h2 class="text-2xl font-semibold text-foreground md:text-3xl">Three ways to run it.</h2>
 		<p class="mt-3 max-w-2xl text-muted-foreground">
 			Same engine underneath. The difference is who operates the media plane.
 		</p>
-		<div class="mt-10 grid gap-6 lg:grid-cols-3">
-			{tiers.map((tier) => (
+		<div class="mt-10 grid gap-6 lg:grid-cols-3" data-reveal>
+			{tiers.map((tier, i) => (
 				<div
 					class:list={[
 						"card-hover flex flex-col rounded-md border p-6",
-						tier.featured ? "glow-ring border-primary/60 bg-card/60" : "border-white/10",
+						i === 0 ? "reveal-split-left" : i === 2 ? "reveal-split-right" : "reveal-split-pop",
+						tier.featured ? "glow-ring border-primary/60 bg-card/60" : "border-border",
 					]}
 				>
 					<div class="flex items-center justify-between">

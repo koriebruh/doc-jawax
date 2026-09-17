@@ -17,6 +17,8 @@
     --color-plane-media: var(--plane-media);
     --color-gold: var(--gold);
     --color-gold-foreground: var(--gold-foreground);
+    --color-delivery: var(--delivery);
+    --color-delivery-foreground: var(--delivery-foreground);
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -58,6 +60,50 @@
 }
 
 :root {
+    color-scheme: light;
+    --background: #faf8ff;
+    --foreground: #17152b;
+    --card: #ffffff;
+    --card-foreground: #17152b;
+    --popover: #ffffff;
+    --popover-foreground: #17152b;
+    --primary: #7c3aed;
+    --primary-foreground: #ffffff;
+    --secondary: #f1edfb;
+    --secondary-foreground: #17152b;
+    --muted: #f1edfb;
+    --muted-foreground: #5b5678;
+    --accent: #f1edfb;
+    --accent-foreground: #17152b;
+    --destructive: #e11d48;
+    --border: oklch(0 0 0 / 10%);
+    --input: oklch(0 0 0 / 14%);
+    --ring: #7c3aed;
+    --live: #e11d48;
+    --live-foreground: #ffffff;
+    --gold: #b45309;
+    --gold-foreground: #fffaf0;
+    --delivery: #0891b2;
+    --delivery-foreground: #ffffff;
+    --plane-media: var(--gold);
+    --plane-control: var(--primary);
+    --chart-1: #7c3aed;
+    --chart-2: #b45309;
+    --chart-3: #0891b2;
+    --chart-4: #5b5678;
+    --chart-5: #cabff5;
+    --radius: 0.625rem;
+    --sidebar: #ffffff;
+    --sidebar-foreground: #17152b;
+    --sidebar-primary: #7c3aed;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #f1edfb;
+    --sidebar-accent-foreground: #17152b;
+    --sidebar-border: oklch(0 0 0 / 10%);
+    --sidebar-ring: #7c3aed;
+}
+
+.dark {
     color-scheme: dark;
     --background: #0b0b1f;
     --foreground: #f7f7fc;
@@ -81,11 +127,13 @@
     --live-foreground: #ffffff;
     --gold: #fbbf24;
     --gold-foreground: #241c02;
-    --plane-media: #fbbf24;
-    --plane-control: #8b5cf6;
+    --delivery: #22d3ee;
+    --delivery-foreground: #032b30;
+    --plane-media: var(--gold);
+    --plane-control: var(--primary);
     --chart-1: #8b5cf6;
     --chart-2: #fbbf24;
-    --chart-3: #9a97b8;
+    --chart-3: #22d3ee;
     --chart-4: #4c1d95;
     --chart-5: #292552;
     --radius: 0.625rem;
@@ -122,15 +170,15 @@
     z-index: -1;
     pointer-events: none;
     background-image:
-        radial-gradient(circle at 15% 10%, oklch(0.63 0.24 293 / 26%), transparent 42%),
-        radial-gradient(circle at 85% 38%, oklch(0.83 0.15 85 / 16%), transparent 45%),
+        radial-gradient(circle at 15% 10%, oklch(0.63 0.24 293 / 22%), transparent 42%),
+        radial-gradient(circle at 85% 38%, oklch(0.7 0.16 55 / 14%), transparent 45%),
         linear-gradient(
-            oklch(1 0 0 / 4%) 1px,
+            oklch(0.5 0 0 / 6%) 1px,
             transparent 1px
         ),
         linear-gradient(
             90deg,
-            oklch(1 0 0 / 4%) 1px,
+            oklch(0.5 0 0 / 6%) 1px,
             transparent 1px
         );
     background-size: auto, auto, 48px 48px, 48px 48px;
@@ -170,19 +218,147 @@
     }
 }
 
-.reveal {
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 700ms ease, transform 700ms ease;
+/* ---- flowing signal dots along a connector track ---- */
+.flow-track {
+    position: relative;
 }
-.reveal.is-visible {
+@keyframes flow-x {
+    0% { left: -4px; opacity: 0; }
+    12% { opacity: 1; }
+    88% { opacity: 1; }
+    100% { left: 100%; opacity: 0; }
+}
+@keyframes flow-y {
+    0% { top: -4px; opacity: 0; }
+    12% { opacity: 1; }
+    88% { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+}
+.flow-dot-x {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: flow-x linear infinite;
+}
+.flow-dot-y {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: flow-y linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+    .flow-dot-x, .flow-dot-y {
+        animation: none;
+        opacity: 0.6;
+        left: 50%;
+        top: 50%;
+    }
+}
+
+/* ---- scroll reveal: base + distinct per-section recipes ---- */
+.reveal { opacity: 0; transition: opacity 700ms ease; }
+.reveal.is-visible { opacity: 1; }
+
+.reveal-quiet {
+    opacity: 0;
+    transition: opacity 900ms ease;
+}
+.reveal-quiet.is-visible {
+    opacity: 1;
+}
+
+.reveal-cascade-left > * {
+    opacity: 0;
+    transform: translateX(-14px);
+    transition: opacity 500ms ease, transform 500ms ease;
+}
+.reveal-cascade-left.is-visible > * {
     opacity: 1;
     transform: none;
 }
+.reveal-cascade-left.is-visible > *:nth-child(1) { transition-delay: 0ms; }
+.reveal-cascade-left.is-visible > *:nth-child(2) { transition-delay: 90ms; }
+.reveal-cascade-left.is-visible > *:nth-child(3) { transition-delay: 180ms; }
+.reveal-cascade-left.is-visible > *:nth-child(4) { transition-delay: 270ms; }
+
+.reveal-cascade-up > * {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 400ms ease, transform 400ms ease;
+}
+.reveal-cascade-up.is-visible > * {
+    opacity: 1;
+    transform: none;
+}
+.reveal-cascade-up.is-visible > *:nth-child(1) { transition-delay: 0ms; }
+.reveal-cascade-up.is-visible > *:nth-child(2) { transition-delay: 60ms; }
+.reveal-cascade-up.is-visible > *:nth-child(3) { transition-delay: 120ms; }
+.reveal-cascade-up.is-visible > *:nth-child(4) { transition-delay: 180ms; }
+.reveal-cascade-up.is-visible > *:nth-child(5) { transition-delay: 240ms; }
+.reveal-cascade-up.is-visible > *:nth-child(6) { transition-delay: 300ms; }
+
+.reveal-scale-in > * {
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 500ms ease, transform 500ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+.reveal-scale-in.is-visible > * {
+    opacity: 1;
+    transform: none;
+}
+.reveal-scale-in.is-visible > *:nth-child(1) { transition-delay: 0ms; }
+.reveal-scale-in.is-visible > *:nth-child(2) { transition-delay: 80ms; }
+.reveal-scale-in.is-visible > *:nth-child(3) { transition-delay: 160ms; }
+.reveal-scale-in.is-visible > *:nth-child(4) { transition-delay: 240ms; }
+.reveal-scale-in.is-visible > *:nth-child(5) { transition-delay: 320ms; }
+.reveal-scale-in.is-visible > *:nth-child(6) { transition-delay: 400ms; }
+
+.reveal-focus {
+    opacity: 0;
+    transform: scale(0.97);
+    filter: blur(6px);
+    transition: opacity 700ms ease, transform 700ms ease, filter 700ms ease;
+}
+.reveal-focus.is-visible {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+}
+
+.reveal-split-left {
+    opacity: 0;
+    transform: translateX(-24px);
+    transition: opacity 600ms ease, transform 600ms ease;
+}
+.reveal-split-right {
+    opacity: 0;
+    transform: translateX(24px);
+    transition: opacity 600ms ease, transform 600ms ease;
+}
+.reveal-split-pop {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 500ms ease 150ms, transform 500ms cubic-bezier(0.34, 1.4, 0.64, 1) 150ms;
+}
+.is-visible .reveal-split-left,
+.is-visible .reveal-split-right,
+.is-visible .reveal-split-pop {
+    opacity: 1;
+    transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
-    .reveal {
+    .reveal,
+    .reveal-cascade-left > *,
+    .reveal-cascade-up > *,
+    .reveal-scale-in > *,
+    .reveal-focus,
+    .reveal-split-left,
+    .reveal-split-right,
+    .reveal-split-pop {
         opacity: 1;
         transform: none;
+        filter: none;
         transition: none;
     }
 }

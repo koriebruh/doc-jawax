@@ -48,12 +48,12 @@ const features = [
 ];
 ---
 
-<section class="reveal border-b border-white/10">
+<section class="border-b border-border">
 	<div class="mx-auto max-w-6xl px-6 py-20">
 		<h2 class="text-2xl font-semibold text-foreground md:text-3xl">What's in the box.</h2>
-		<div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+		<div class="reveal-scale-in mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-reveal>
 			{features.map((f) => (
-				<Card className="card-hover border-white/10 bg-card/40">
+				<Card className="card-hover border-border bg-card/40">
 					<CardHeader>
 						<CardTitle className="flex items-center gap-2 font-mono text-sm text-primary">
 							<f.icon className="h-4 w-4" />

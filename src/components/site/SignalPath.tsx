@@ -10,7 +10,7 @@ const nodes = [
 
 export default function SignalPath() {
 	return (
-		<div className="glow-ring rounded-md border border-white/10 bg-card/40 p-6 font-mono">
+		<div className="glow-ring rounded-md border border-border bg-card/40 p-6 font-mono">
 			<div className="mb-5 flex items-center justify-between">
 				<span className="text-xs tracking-[0.2em] text-muted-foreground uppercase">
 					Signal path
@@ -32,7 +32,7 @@ export default function SignalPath() {
 								"rounded border px-3 py-2 whitespace-nowrap " +
 								(node.group === "core"
 									? "border-primary/60 text-primary"
-									: "border-white/15 text-foreground")
+									: "border-border text-foreground")
 							}
 							initial={{ opacity: 0.35 }}
 							animate={{ opacity: [0.35, 1, 0.35] }}

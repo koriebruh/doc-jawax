@@ -14,15 +14,15 @@ const stack = [
 ];
 ---
 
-<section class="reveal border-b border-white/10">
+<section class="border-b border-border">
 	<div class="mx-auto max-w-6xl px-6 py-20">
 		<h2 class="text-2xl font-semibold text-foreground md:text-3xl">Built with, not built on top of.</h2>
 		<p class="mt-3 max-w-2xl text-muted-foreground">
 			Every piece here is load-bearing — nothing on this list is decoration.
 		</p>
-		<div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+		<div class="reveal-scale-in mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-reveal>
 			{stack.map((item) => (
-				<Card className="card-hover border-white/10 bg-card/40">
+				<Card className="card-hover border-border bg-card/40">
 					<CardHeader>
 						<CardTitle className="flex items-center gap-2 font-mono text-sm text-primary">
 							{item.brand ? <BrandIcon path={item.brand} class="h-4 w-4" /> : <item.icon className="h-4 w-4" />}

@@ -1,66 +1,218 @@
 ---
-const controlItems = ["jawax_api — Phoenix REST", "Postgres", "Oban jobs"];
-const mediaItems = ["jawax_ingest — RTMP", "jawax_transcode — Membrane + FFmpeg", "jawax_sfu — Go + Pion"];
 ---
 
-<section class="reveal border-b border-white/10 bg-card/20">
-	<div class="mx-auto max-w-6xl px-6 py-20">
+<section class="border-b border-border bg-card/20" data-reveal>
+	<div class="mx-auto max-w-5xl px-6 py-20">
 		<h2 class="text-2xl font-semibold text-foreground md:text-3xl">
 			Control plane and media plane, split on purpose.
 		</h2>
 		<p class="mt-3 max-w-2xl text-muted-foreground">
-			The media node keeps serving already-live streams off a local
-			stream-key cache even if the control plane goes down for a moment.
+			Three moving parts, three kinds of traffic: API calls to the control
+			plane, a gRPC handshake inside the media node, and the actual video
+			going straight to the CDN or the viewer.
 		</p>
 
-		<div class="mt-12 flex flex-col items-stretch gap-4 lg:flex-row lg:items-center lg:justify-center">
-			<div class="rounded-md border border-[color-mix(in_oklab,var(--color-plane-control)_55%,transparent)] bg-[color-mix(in_oklab,var(--color-plane-control)_8%,transparent)] p-6 lg:w-72">
-				<p class="font-mono text-xs tracking-[0.15em] uppercase" style="color: var(--color-plane-control)">
-					Control plane
-				</p>
-				<ul class="mt-3 space-y-1.5 text-sm text-foreground">
-					{controlItems.map((item) => <li>{item}</li>)}
+		<div class="mx-auto mt-14 flex max-w-md flex-col items-stretch">
+			<!-- Your app -->
+			<div class="arch-node arch-node-neutral" data-arch>
+				<p class="font-mono text-xs tracking-[0.15em] text-muted-foreground uppercase">Your app</p>
+				<p class="mt-1 text-sm text-foreground">Creates channels, requests playback tokens</p>
+			</div>
+
+			<div class="arch-link flow-track" data-arch>
+				<span class="arch-line"></span>
+				<span class="flow-dot-x h-1.5 w-1.5 rounded-full" style="background-color: var(--color-plane-control); animation-duration: 1.6s;"></span>
+				<span class="arch-link-label" style="color: var(--color-plane-control)">REST /v1 — create channel, playback token</span>
+			</div>
+
+			<!-- Control plane -->
+			<div class="arch-node" data-arch style="border-color: color-mix(in oklab, var(--color-plane-control) 55%, transparent); background-color: color-mix(in oklab, var(--color-plane-control) 8%, transparent);">
+				<p class="font-mono text-xs tracking-[0.15em] uppercase" style="color: var(--color-plane-control)">Control plane — jawax_api</p>
+				<ul class="mt-2 space-y-1 text-sm text-foreground">
+					<li>Phoenix REST API, Postgres</li>
+					<li>Auth · org &amp; API keys</li>
+					<li>Webhooks &amp; usage (Oban)</li>
 				</ul>
 			</div>
 
-			<div class="flex flex-row items-center gap-3 self-center lg:flex-col">
-				<span class="h-px w-8 bg-white/15 lg:h-8 lg:w-px"></span>
-				<div class="flex items-center gap-1.5">
-					<span class="heartbeat-dot h-1.5 w-1.5 rounded-full" style="background-color: var(--color-plane-control)"></span>
-					<span class="heartbeat-dot h-1.5 w-1.5 rounded-full bg-white/50" style="animation-delay: 260ms"></span>
-					<span class="heartbeat-dot h-1.5 w-1.5 rounded-full" style="background-color: var(--color-plane-media); animation-delay: 520ms"></span>
+			<div class="arch-link flow-track" data-arch>
+				<span class="arch-line arch-line-dashed"></span>
+				<span class="flow-dot-x h-1.5 w-1.5 rounded-full" style="background-color: var(--color-plane-control); animation-duration: 3.2s;"></span>
+				<span class="arch-link-label text-muted-foreground">stream_key issued, cached locally (ETS)</span>
+			</div>
+
+			<!-- Media node -->
+			<div class="rounded-lg border border-dashed border-border p-4" data-arch>
+				<p class="mb-3 text-center font-mono text-[11px] tracking-[0.15em] text-muted-foreground uppercase">
+					Media node — one VPS, two processes
+				</p>
+				<div class="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+					<div
+						class="arch-node flex-1"
+						style="border-color: color-mix(in oklab, var(--color-plane-media) 55%, transparent); background-color: color-mix(in oklab, var(--color-plane-media) 8%, transparent);"
+					>
+						<p class="font-mono text-xs tracking-[0.15em] uppercase" style="color: var(--color-plane-media)">jawax_ingest / transcode</p>
+						<p class="mt-1 text-xs text-muted-foreground">Elixir/BEAM · RTMP, ABR, HLS, LL-HLS</p>
+					</div>
+
+					<div class="flow-track relative h-10 w-full shrink-0 sm:h-auto sm:w-14">
+						<span class="arch-cross-line"></span>
+						<span class="flow-dot-x h-1.5 w-1.5 rounded-full sm:hidden" style="background-color: var(--color-plane-media); animation-duration: 1.1s;"></span>
+						<span class="flow-dot-y hidden h-1.5 w-1.5 rounded-full sm:block" style="background-color: var(--color-plane-media); animation-duration: 1.1s;"></span>
+						<span class="flow-dot-x h-1.5 w-1.5 rounded-full sm:hidden" style="background-color: var(--color-plane-control); animation-duration: 1.1s; animation-direction: reverse;"></span>
+						<span class="flow-dot-y hidden h-1.5 w-1.5 rounded-full sm:block" style="background-color: var(--color-plane-control); animation-duration: 1.1s; animation-direction: reverse;"></span>
+					</div>
+
+					<div
+						class="arch-node flex-1"
+						style="border-color: color-mix(in oklab, var(--color-plane-media) 55%, transparent); background-color: color-mix(in oklab, var(--color-plane-media) 8%, transparent);"
+					>
+						<p class="font-mono text-xs tracking-[0.15em] uppercase" style="color: var(--color-plane-media)">jawax_sfu</p>
+						<p class="mt-1 text-xs text-muted-foreground">Go + Pion · WHIP / WHEP</p>
+					</div>
 				</div>
-				<span class="font-mono text-xs whitespace-nowrap text-muted-foreground">Postgres · license heartbeat</span>
-				<span class="h-px w-8 bg-white/15 lg:h-8 lg:w-px"></span>
+				<p class="mt-3 text-center font-mono text-[11px] text-muted-foreground">
+					gRPC control (validate, prepare) · RTP/UDP media, localhost only
+				</p>
 			</div>
 
-			<div class="rounded-md border border-[color-mix(in_oklab,var(--color-plane-media)_55%,transparent)] bg-[color-mix(in_oklab,var(--color-plane-media)_8%,transparent)] p-6 lg:w-72">
-				<p class="font-mono text-xs tracking-[0.15em] uppercase" style="color: var(--color-plane-media)">
-					Media plane
-				</p>
-				<ul class="mt-3 space-y-1.5 text-sm text-foreground">
-					{mediaItems.map((item) => <li>{item}</li>)}
-				</ul>
+			<!-- Delivery branches -->
+			<div class="mt-3 grid gap-3 sm:grid-cols-2">
+				<div class="flow-track relative flex flex-col items-center" data-arch>
+					<span class="arch-cross-line arch-cross-line-vertical"></span>
+					<span class="flow-dot-y h-1.5 w-1.5 rounded-full" style="background-color: var(--color-delivery); animation-duration: 2.6s;"></span>
+					<span class="mb-3 mt-6 font-mono text-[11px] text-muted-foreground">incremental upload</span>
+					<div class="arch-node w-full" style="border-color: color-mix(in oklab, var(--color-delivery) 55%, transparent); background-color: color-mix(in oklab, var(--color-delivery) 8%, transparent);">
+						<p class="font-mono text-xs tracking-[0.15em] uppercase" style="color: var(--color-delivery)">R2 — recordings</p>
+						<p class="mt-1 text-xs text-muted-foreground">S3-compatible, VOD only</p>
+					</div>
+				</div>
+				<div class="flow-track relative flex flex-col items-center" data-arch>
+					<span class="arch-cross-line arch-cross-line-vertical"></span>
+					<span class="flow-dot-y h-1.5 w-1.5 rounded-full" style="background-color: var(--color-delivery); animation-duration: 0.9s;"></span>
+					<span class="mb-3 mt-6 font-mono text-[11px] text-muted-foreground">live segments</span>
+					<div class="arch-node w-full" style="border-color: color-mix(in oklab, var(--color-delivery) 55%, transparent); background-color: color-mix(in oklab, var(--color-delivery) 8%, transparent);">
+						<p class="font-mono text-xs tracking-[0.15em] uppercase" style="color: var(--color-delivery)">CDN — HLS / LL-HLS</p>
+						<p class="mt-1 text-xs text-muted-foreground">+ WHEP straight from jawax_sfu, direct SRTP</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="arch-link flow-track" data-arch>
+				<span class="arch-line"></span>
+				<span class="flow-dot-x h-1.5 w-1.5 rounded-full" style="background-color: var(--color-delivery); animation-duration: 1s;"></span>
+			</div>
+
+			<div class="arch-node arch-node-neutral" data-arch>
+				<p class="font-mono text-xs tracking-[0.15em] text-muted-foreground uppercase">Viewer</p>
+				<p class="mt-1 text-sm text-foreground">HLS/LL-HLS off the CDN, or WHEP direct for low latency</p>
 			</div>
 		</div>
-		<p class="mt-4 text-center font-mono text-xs text-muted-foreground">
-			gRPC is internal to the media plane — jawax_sfu calls jawax_transcode for control only.
-			Raw RTP still moves over localhost UDP, never gRPC.
-		</p>
 
-		<ul class="mt-10 grid gap-3 text-sm text-muted-foreground sm:grid-cols-3">
-			<li class="rounded border border-white/10 p-4">
+		<ul class="mt-14 grid gap-3 text-sm text-muted-foreground sm:grid-cols-3">
+			<li class="rounded border border-border p-4">
 				<span class="text-foreground">Per-channel isolation.</span> One crashed
 				transcode pipeline restarts under OTP without touching any other live channel.
 			</li>
-			<li class="rounded border border-white/10 p-4">
+			<li class="rounded border border-border p-4">
 				<span class="text-foreground">Drain before deploy.</span> New connections
 				stop, a 30s grace window runs, then the node restarts.
 			</li>
-			<li class="rounded border border-white/10 p-4">
+			<li class="rounded border border-border p-4">
 				<span class="text-foreground">No Redis.</span> Postgres-backed jobs (Oban),
 				PubSub for ephemeral coordination. One less thing to operate.
 			</li>
 		</ul>
 	</div>
 </section>
+
+<style>
+	.arch-node {
+		border-radius: 0.5rem;
+		border-width: 1px;
+		border-color: var(--color-border);
+		padding: 0.9rem 1.1rem;
+		opacity: 0;
+		transform: translateY(10px);
+		transition: opacity 500ms ease, transform 500ms ease;
+	}
+	.arch-node-neutral {
+		background-color: color-mix(in oklab, var(--color-foreground) 4%, transparent);
+	}
+	[data-reveal].is-visible .arch-node {
+		opacity: 1;
+		transform: none;
+	}
+	.arch-link {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.25rem;
+		padding: 0.5rem 0;
+		opacity: 0;
+		transition: opacity 400ms ease;
+	}
+	[data-reveal].is-visible .arch-link {
+		opacity: 1;
+	}
+	.arch-line {
+		height: 1.5rem;
+		width: 1px;
+		background: color-mix(in oklab, var(--color-foreground) 18%, transparent);
+	}
+	.arch-line-dashed {
+		background: repeating-linear-gradient(
+			to bottom,
+			color-mix(in oklab, var(--color-foreground) 25%, transparent) 0 4px,
+			transparent 4px 8px
+		);
+	}
+	.arch-link-label {
+		font-family: var(--font-mono);
+		font-size: 0.7rem;
+		white-space: nowrap;
+	}
+	.arch-cross-line {
+		position: absolute;
+		inset: 0;
+		margin: auto;
+		height: 1px;
+		width: 100%;
+		background: color-mix(in oklab, var(--color-foreground) 16%, transparent);
+	}
+	@media (min-width: 640px) {
+		.arch-cross-line {
+			height: 100%;
+			width: 1px;
+		}
+	}
+	.arch-cross-line-vertical {
+		height: 100%;
+		width: 1px;
+		position: absolute;
+		top: 0;
+		left: 50%;
+	}
+
+	/* Orchestrated sequence: control plane appears, then the link, then media node, then delivery */
+	[data-arch] {
+		transition-delay: 0ms;
+	}
+	[data-reveal].is-visible [data-arch]:nth-of-type(1) { transition-delay: 0ms; }
+	[data-reveal].is-visible [data-arch]:nth-of-type(2) { transition-delay: 120ms; }
+	[data-reveal].is-visible [data-arch]:nth-of-type(3) { transition-delay: 240ms; }
+	[data-reveal].is-visible [data-arch]:nth-of-type(4) { transition-delay: 420ms; }
+	[data-reveal].is-visible [data-arch]:nth-of-type(5) { transition-delay: 600ms; }
+	[data-reveal].is-visible [data-arch]:nth-of-type(6) { transition-delay: 680ms; }
+	[data-reveal].is-visible [data-arch]:nth-of-type(7) { transition-delay: 760ms; }
+	[data-reveal].is-visible [data-arch]:nth-of-type(8) { transition-delay: 840ms; }
+
+	@media (prefers-reduced-motion: reduce) {
+		.arch-node,
+		.arch-link {
+			opacity: 1;
+			transform: none;
+			transition: none;
+		}
+	}
+</style>
