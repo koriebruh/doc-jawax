@@ -9,6 +9,7 @@ export default function PromoPlayer() {
 			fps={30}
 			compositionWidth={1920}
 			compositionHeight={1080}
+			initialFrame={28}
 			style={{ width: "100%", borderRadius: 10, border: "1px solid rgba(242,244,245,0.1)" }}
 			controls
 			loop
