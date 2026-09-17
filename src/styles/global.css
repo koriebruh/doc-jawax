@@ -191,17 +191,11 @@
 }
 
 .card-hover {
-    transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+    transition: border-color 200ms ease, background-color 200ms ease;
 }
 .card-hover:hover {
-    border-color: oklch(0.7 0.19 43 / 45%);
-    transform: translateY(-2px);
-    box-shadow: 0 16px 32px -20px oklch(0.7 0.19 43 / 40%);
-}
-@media (prefers-reduced-motion: reduce) {
-    .card-hover:hover {
-        transform: none;
-    }
+    border-color: oklch(0.7 0.19 43 / 40%);
+    background-color: color-mix(in oklab, var(--color-card) 96%, var(--color-primary));
 }
 
 @keyframes heartbeat-pulse {

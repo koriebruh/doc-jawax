@@ -1,5 +1,5 @@
 ---
-import { UploadCloud, PlayCircle, Disc, Webhook, Receipt, KeyRound, Check, ArrowUpRight } from "lucide-react";
+import { UploadCloud, PlayCircle, Disc, Webhook, Receipt, KeyRound } from "lucide-react";
 
 const does = ["Ingest", "Transcode to an ABR ladder", "Deliver HLS, LL-HLS, WHEP"];
 const doesNot = ["Chat", "Discovery / recommendations", "A viewer-facing app"];
@@ -58,25 +58,28 @@ const features = [
 			the rest of your product.
 		</p>
 		<div class="reveal-scale-in mt-10 grid auto-rows-[minmax(9rem,auto)] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[9.5rem]" data-reveal>
-			<div class="rounded-lg border border-border bg-card/40 p-6 sm:col-span-2 lg:col-span-2 lg:row-span-2">
-				<p class="font-mono text-xs tracking-[0.15em] text-primary uppercase">Jawax does</p>
-				<ul class="mt-3 space-y-1.5 text-sm text-foreground">
+			<div class="overflow-hidden rounded-lg border border-border bg-[#0a0a0b] sm:col-span-2 lg:col-span-2 lg:row-span-2">
+				<div class="flex items-center gap-1.5 border-b border-white/10 px-4 py-2.5">
+					<span class="h-2 w-2 rounded-full bg-white/15"></span>
+					<span class="h-2 w-2 rounded-full bg-white/15"></span>
+					<span class="h-2 w-2 rounded-full bg-white/15"></span>
+					<span class="ml-2 font-mono text-xs text-muted-foreground">jawax --responsibilities</span>
+				</div>
+				<div class="p-5 font-mono text-sm">
 					{does.map((item) => (
-						<li class="flex items-center gap-2">
-							<Check className="h-4 w-4 shrink-0 text-primary" />
+						<p class="flex items-start gap-2 py-0.5 text-foreground">
+							<span class="text-primary">$</span>
 							{item}
-						</li>
+						</p>
 					))}
-				</ul>
-				<p class="mt-4 font-mono text-xs tracking-[0.15em] text-muted-foreground uppercase">You build</p>
-				<ul class="mt-3 space-y-1.5 text-sm text-muted-foreground">
+					<p class="mt-3 text-muted-foreground"># everything past this line is yours</p>
 					{doesNot.map((item) => (
-						<li class="flex items-center gap-2">
-							<ArrowUpRight className="h-4 w-4 shrink-0" />
+						<p class="flex items-start gap-2 py-0.5 text-muted-foreground/70">
+							<span>#</span>
 							{item}
-						</li>
+						</p>
 					))}
-				</ul>
+				</div>
 			</div>
 			{features.map((f) => (
 				<div class:list={["card-hover rounded-lg border border-border bg-card/40 p-5", f.span]}>
