@@ -77,20 +77,24 @@
 			</div>
 
 			<!-- Delivery branches -->
-			<div class="mt-3 grid gap-3 sm:grid-cols-2">
-				<div class="flow-track relative flex flex-col items-center" data-arch>
-					<span class="arch-cross-line arch-cross-line-vertical"></span>
-					<span class="flow-dot-y h-1.5 w-1.5 rounded-full" style="background-color: var(--color-delivery); animation-duration: 2.6s;"></span>
-					<span class="mb-3 mt-6 font-mono text-[11px] text-muted-foreground">incremental upload</span>
+			<div class="mt-1 grid gap-3 sm:grid-cols-2">
+				<div class="flex flex-col items-stretch" data-arch>
+					<div class="arch-link flow-track">
+						<span class="arch-line"></span>
+						<span class="flow-dot-y h-1.5 w-1.5 rounded-full" style="background-color: var(--color-delivery); animation-duration: 2.6s;"></span>
+						<span class="arch-link-label text-muted-foreground">incremental upload</span>
+					</div>
 					<div class="arch-node w-full" style="border-color: color-mix(in oklab, var(--color-delivery) 55%, transparent); background-color: color-mix(in oklab, var(--color-delivery) 8%, transparent);">
 						<p class="font-mono text-xs tracking-[0.15em] uppercase" style="color: var(--color-delivery)">R2 — recordings</p>
 						<p class="mt-1 text-xs text-muted-foreground">S3-compatible, VOD only</p>
 					</div>
 				</div>
-				<div class="flow-track relative flex flex-col items-center" data-arch>
-					<span class="arch-cross-line arch-cross-line-vertical"></span>
-					<span class="flow-dot-y h-1.5 w-1.5 rounded-full" style="background-color: var(--color-delivery); animation-duration: 0.9s;"></span>
-					<span class="mb-3 mt-6 font-mono text-[11px] text-muted-foreground">live segments</span>
+				<div class="flex flex-col items-stretch" data-arch>
+					<div class="arch-link flow-track">
+						<span class="arch-line"></span>
+						<span class="flow-dot-y h-1.5 w-1.5 rounded-full" style="background-color: var(--color-delivery); animation-duration: 0.9s;"></span>
+						<span class="arch-link-label text-muted-foreground">live segments</span>
+					</div>
 					<div class="arch-node w-full" style="border-color: color-mix(in oklab, var(--color-delivery) 55%, transparent); background-color: color-mix(in oklab, var(--color-delivery) 8%, transparent);">
 						<p class="font-mono text-xs tracking-[0.15em] uppercase" style="color: var(--color-delivery)">CDN — HLS / LL-HLS</p>
 						<p class="mt-1 text-xs text-muted-foreground">+ WHEP straight from jawax_sfu, direct SRTP</p>
@@ -186,14 +190,6 @@
 			width: 100%;
 		}
 	}
-	.arch-cross-line-vertical {
-		height: 100%;
-		width: 1px;
-		position: absolute;
-		top: 0;
-		left: 50%;
-	}
-
 	/* Orchestrated sequence: control plane appears, then the link, then media node, then delivery */
 	[data-arch] {
 		transition-delay: 0ms;
