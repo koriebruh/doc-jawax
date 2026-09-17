@@ -1,6 +1,6 @@
 ---
 import SignalPath from "./SignalPath";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 ---
 
 <section class="bg-signal-glow relative border-b border-border">
@@ -18,12 +18,12 @@ import { Button } from "@/components/ui/button";
 				plane for you.
 			</p>
 			<div class="mt-8 flex flex-wrap gap-3">
-				<Button asChild size="lg">
-					<a href="/docs/quickstart-self-host">Read the quickstart</a>
-				</Button>
-				<Button asChild size="lg" variant="outline">
-					<a href="/#offerings">See offerings</a>
-				</Button>
+				<a href="/docs/quickstart-self-host" class={buttonVariants({ size: "lg" })}>
+					Read the quickstart
+				</a>
+				<a href="/#offerings" class={buttonVariants({ size: "lg", variant: "outline" })}>
+					See offerings
+				</a>
 			</div>
 			<p class="mt-6 font-mono text-xs text-muted-foreground">v0.1.0 · pre-1.0, actively built</p>
 		</div>

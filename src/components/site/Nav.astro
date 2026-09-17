@@ -1,10 +1,10 @@
 ---
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Sun, Moon } from "lucide-react";
 import MobileNav from "./MobileNav";
 ---
 
-<header class="sticky top-0 z-50 border-b border-border/80 bg-background/75 backdrop-blur-md">
+<header class="sticky top-0 z-50 border-b border-transparent bg-background/80 backdrop-blur-md [border-image:linear-gradient(to_right,transparent,var(--color-primary)_35%,var(--color-delivery)_65%,transparent)_1]">
 	<div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-3.5">
 		<a href="/" class="group flex items-center gap-2.5 font-mono text-sm text-foreground">
 			<span class="relative flex h-2.5 w-2.5">
@@ -28,12 +28,15 @@ import MobileNav from "./MobileNav";
 				<Sun className="hidden h-4 w-4 dark:block" />
 				<Moon className="block h-4 w-4 dark:hidden" />
 			</button>
-			<Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
-				<a href="/docs/quickstart-self-host">Quickstart</a>
-			</Button>
-			<Button asChild size="sm" className="hidden sm:inline-flex">
-				<a href="/#offerings">Talk to us</a>
-			</Button>
+			<a
+				href="/docs/quickstart-self-host"
+				class:list={[buttonVariants({ variant: "ghost", size: "sm" }), "hidden sm:inline-flex"]}
+			>
+				Quickstart
+			</a>
+			<a href="/#offerings" class:list={[buttonVariants({ size: "sm" }), "hidden sm:inline-flex"]}>
+				Talk to us
+			</a>
 			<MobileNav client:load />
 		</div>
 	</div>

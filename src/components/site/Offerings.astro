@@ -1,6 +1,6 @@
 ---
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Check } from "lucide-react";
 
 const tiers = [
@@ -79,9 +79,12 @@ const tiers = [
 						))}
 					</ul>
 					{tier.cta ? (
-						<Button asChild className="mt-6" variant={tier.featured ? "default" : "outline"}>
-							<a href={tier.cta.href}>{tier.cta.label}</a>
-						</Button>
+						<a
+							href={tier.cta.href}
+							class:list={["mt-6", buttonVariants({ variant: tier.featured ? "default" : "outline" })]}
+						>
+							{tier.cta.label}
+						</a>
 					) : (
 						<Button className="mt-6" variant="outline" disabled>
 							Not available yet

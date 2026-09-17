@@ -1,5 +1,4 @@
 ---
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AudioWaveform, ListChecks } from "lucide-react";
 import { siElixir, siPhoenixframework, siGo, siPostgresql } from "simple-icons";
 import BrandIcon from "./BrandIcon.astro";
@@ -15,24 +14,22 @@ const stack = [
 ---
 
 <section class="border-b border-border">
-	<div class="mx-auto max-w-6xl px-6 py-20">
+	<div class="mx-auto max-w-4xl px-6 py-20">
 		<h2 class="text-2xl font-semibold text-foreground md:text-3xl">Built with, not built on top of.</h2>
 		<p class="mt-3 max-w-2xl text-muted-foreground">
 			Every piece here is load-bearing — nothing on this list is decoration.
 		</p>
-		<div class="reveal-scale-in mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-reveal>
+		<div class="reveal-cascade-left mt-10 divide-y divide-border border-y border-border" data-reveal>
 			{stack.map((item) => (
-				<Card className="card-hover border-border bg-card/40">
-					<CardHeader>
-						<CardTitle className="flex items-center gap-2 font-mono text-sm text-primary">
+				<div class="flex flex-col gap-2 py-5 sm:flex-row sm:items-center sm:gap-8">
+					<div class="flex items-center gap-3 sm:w-64 sm:shrink-0">
+						<span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-border text-primary">
 							{item.brand ? <BrandIcon path={item.brand} class="h-4 w-4" /> : <item.icon className="h-4 w-4" />}
-							{item.name}
-						</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<p class="text-sm text-muted-foreground">{item.role}</p>
-					</CardContent>
-				</Card>
+						</span>
+						<span class="font-mono text-sm text-foreground">{item.name}</span>
+					</div>
+					<p class="text-sm text-muted-foreground sm:flex-1">{item.role}</p>
+				</div>
 			))}
 		</div>
 	</div>
