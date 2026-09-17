@@ -1,37 +1,38 @@
 ---
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { UploadCloud, PlayCircle, Disc, Webhook, Receipt, KeyRound } from "lucide-react";
+import { UploadCloud, PlayCircle, Disc, Webhook, Receipt, KeyRound, Check, ArrowUpRight } from "lucide-react";
+
+const does = ["Ingest", "Transcode to an ABR ladder", "Deliver HLS, LL-HLS, WHEP"];
+const doesNot = ["Chat", "Discovery / recommendations", "A viewer-facing app"];
 
 const features = [
 	{
 		title: "Ingest",
 		icon: UploadCloud,
+		span: "lg:col-span-1",
 		items: ["RTMP (Membrane)", "WHIP / WebRTC publish (Go + Pion)"],
 	},
 	{
 		title: "Playback",
 		icon: PlayCircle,
+		span: "lg:col-span-1",
 		items: ["HLS", "LL-HLS — sub-second partial segments", "WHEP / WebRTC playback"],
 	},
 	{
 		title: "Recordings",
 		icon: Disc,
-		items: [
-			"Incremental multipart upload — a mid-stream crash only loses the tail",
-			"S3-compatible storage: MinIO, R2, or S3, no code change",
-		],
+		span: "lg:col-span-1",
+		items: ["Incremental multipart upload — a mid-stream crash only loses the tail"],
 	},
 	{
 		title: "Webhooks",
 		icon: Webhook,
-		items: [
-			"stream.started / stream.ended / stream.interrupted / recording.ready",
-			"HMAC-SHA256 signed, SSRF-safe target validation, retried via Oban",
-		],
+		span: "lg:col-span-1",
+		items: ["HMAC-SHA256 signed, SSRF-safe, retried via Oban"],
 	},
 	{
 		title: "Usage & billing",
 		icon: Receipt,
+		span: "lg:col-span-2",
 		items: [
 			"Hourly usage rollup per organization",
 			"Metered Stripe billing on cloud, flat license on self-host",
@@ -40,6 +41,7 @@ const features = [
 	{
 		title: "Auth",
 		icon: KeyRound,
+		span: "lg:col-span-2",
 		items: [
 			"Bearer API keys, hash-stored, per organization",
 			"Short-lived HS256 playback tokens (60s)",
@@ -48,24 +50,44 @@ const features = [
 ];
 ---
 
-<section class="border-b border-border">
+<section id="not-a-platform" class="border-b border-border">
 	<div class="mx-auto max-w-6xl px-6 py-20">
 		<h2 class="text-2xl font-semibold text-foreground md:text-3xl">What's in the box.</h2>
-		<div class="reveal-scale-in mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-reveal>
+		<p class="mt-3 max-w-2xl text-muted-foreground">
+			An engine you embed, not a platform you visit — it has no opinion about
+			the rest of your product.
+		</p>
+		<div class="reveal-scale-in mt-10 grid auto-rows-[minmax(9rem,auto)] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[9.5rem]" data-reveal>
+			<div class="rounded-lg border border-border bg-card/40 p-6 sm:col-span-2 lg:col-span-2 lg:row-span-2">
+				<p class="font-mono text-xs tracking-[0.15em] text-primary uppercase">Jawax does</p>
+				<ul class="mt-3 space-y-1.5 text-sm text-foreground">
+					{does.map((item) => (
+						<li class="flex items-center gap-2">
+							<Check className="h-4 w-4 shrink-0 text-primary" />
+							{item}
+						</li>
+					))}
+				</ul>
+				<p class="mt-4 font-mono text-xs tracking-[0.15em] text-muted-foreground uppercase">You build</p>
+				<ul class="mt-3 space-y-1.5 text-sm text-muted-foreground">
+					{doesNot.map((item) => (
+						<li class="flex items-center gap-2">
+							<ArrowUpRight className="h-4 w-4 shrink-0" />
+							{item}
+						</li>
+					))}
+				</ul>
+			</div>
 			{features.map((f) => (
-				<Card className="card-hover border-border bg-card/40">
-					<CardHeader>
-						<CardTitle className="flex items-center gap-2 font-mono text-sm text-primary">
-							<f.icon className="h-4 w-4" />
-							{f.title}
-						</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<ul class="space-y-2 text-sm text-muted-foreground">
-							{f.items.map((item) => <li>{item}</li>)}
-						</ul>
-					</CardContent>
-				</Card>
+				<div class:list={["card-hover rounded-lg border border-border bg-card/40 p-5", f.span]}>
+					<p class="flex items-center gap-2 font-mono text-sm text-primary">
+						<f.icon className="h-4 w-4" />
+						{f.title}
+					</p>
+					<ul class="mt-2 space-y-1 text-sm text-muted-foreground">
+						{f.items.map((item) => <li>{item}</li>)}
+					</ul>
+				</div>
 			))}
 		</div>
 	</div>

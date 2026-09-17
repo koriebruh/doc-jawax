@@ -10,12 +10,13 @@ import {
 import "@fontsource-variable/plus-jakarta-sans";
 import "@fontsource-variable/geist-mono";
 
-const INK = "#0b0b1f";
-const PAPER = "#f7f7fc";
-const PRIMARY = "#8b5cf6";
-const GOLD = "#fbbf24";
-const MUTED = "#9a97b8";
-const LIVE = "#ff3b6f";
+const INK = "#121214";
+const PAPER = "#f7f7f8";
+const PRIMARY = "#f97316";
+const GOLD = "#f97316";
+const BLUE = "#3b82f6";
+const MUTED = "#9a9a9f";
+const LIVE = "#ef4444";
 
 const sans = "'Plus Jakarta Sans Variable', sans-serif";
 const mono = "'Geist Mono Variable', ui-monospace, monospace";
@@ -31,7 +32,7 @@ function Backdrop() {
 		<AbsoluteFill
 			style={{
 				backgroundColor: INK,
-				backgroundImage: `radial-gradient(circle at 14% 12%, ${hexA(PRIMARY, 0.14)}, transparent 42%), radial-gradient(circle at 86% 78%, ${hexA(GOLD, 0.1)}, transparent 46%)`,
+				backgroundImage: `radial-gradient(circle at 14% 12%, ${hexA(PRIMARY, 0.14)}, transparent 42%), radial-gradient(circle at 86% 78%, ${hexA(BLUE, 0.12)}, transparent 46%)`,
 			}}
 		/>
 	);
@@ -316,11 +317,11 @@ function SceneArchitecture() {
 				Control plane and media plane, split on purpose.
 			</div>
 			<div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-				<PlaneBox title="Control plane" color={PRIMARY} items={["jawax_api", "Postgres", "Oban jobs"]} delay={0} align="left" />
+				<PlaneBox title="Control plane" color={BLUE} items={["jawax_api", "Postgres", "Oban jobs"]} delay={0} align="left" />
 				<div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, opacity: link }}>
 					<div style={{ width: 32, height: 1, backgroundColor: hexA(PAPER, 0.25) }} />
 					<div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-						<HeartbeatDot color={PRIMARY} phase={0} />
+						<HeartbeatDot color={BLUE} phase={0} />
 						<HeartbeatDot color={hexA(PAPER, 0.5)} phase={18} />
 						<HeartbeatDot color={GOLD} phase={36} />
 					</div>
