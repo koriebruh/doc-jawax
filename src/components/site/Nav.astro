@@ -1,13 +1,12 @@
 ---
 import { buttonVariants } from "@/components/ui/button";
-import { Sun, Moon } from "lucide-react";
 import MobileNav from "./MobileNav";
 ---
 
 <header class="sticky top-0 z-50 border-b border-transparent bg-background/80 backdrop-blur-md [border-image:linear-gradient(to_right,transparent,var(--color-primary)_35%,var(--color-delivery)_65%,transparent)_1]">
 	<div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-3.5">
 		<a href="/" class="flex items-center gap-2 font-mono text-sm text-foreground">
-			<img src="/logo.png" alt="" width="24" height="24" class="h-6 w-6 rounded-md" />
+			<img src="/logo.svg" alt="" width="24" height="24" class="h-6 w-6 rounded-md" />
 			jawax
 		</a>
 		<nav class="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
@@ -17,14 +16,6 @@ import MobileNav from "./MobileNav";
 			<a href="/#faq" class="transition-colors hover:text-foreground">FAQ</a>
 		</nav>
 		<div class="flex items-center gap-2">
-			<button
-				id="theme-toggle"
-				aria-label="Toggle color theme"
-				class="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-			>
-				<Sun className="hidden h-4 w-4 dark:block" />
-				<Moon className="block h-4 w-4 dark:hidden" />
-			</button>
 			<a
 				href="/docs/quickstart-self-host"
 				class:list={[buttonVariants({ variant: "ghost", size: "sm" }), "hidden sm:inline-flex"]}
@@ -38,13 +29,3 @@ import MobileNav from "./MobileNav";
 		</div>
 	</div>
 </header>
-
-<script>
-	const toggle = document.getElementById("theme-toggle");
-	toggle?.addEventListener("click", () => {
-		const isDark = document.documentElement.classList.toggle("dark");
-		try {
-			localStorage.setItem("theme", isDark ? "dark" : "light");
-		} catch (e) {}
-	});
-</script>

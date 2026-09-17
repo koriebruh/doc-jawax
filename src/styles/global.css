@@ -5,7 +5,8 @@
 @import "@fontsource-variable/geist-mono";
 @plugin "@tailwindcss/typography";
 
-@custom-variant dark (&:is(.dark *));
+/* Light mode only: neutralize dark: utilities instead of following OS preference */
+@custom-variant dark (&:where(.never-dark));
 
 @theme inline {
     --font-heading: var(--font-sans);
@@ -101,50 +102,6 @@
     --sidebar-accent-foreground: #18181b;
     --sidebar-border: oklch(0 0 0 / 10%);
     --sidebar-ring: #ea580c;
-}
-
-.dark {
-    color-scheme: dark;
-    --background: #121214;
-    --foreground: #f7f7f8;
-    --card: #1c1c1f;
-    --card-foreground: #f7f7f8;
-    --popover: #1c1c1f;
-    --popover-foreground: #f7f7f8;
-    --primary: #f97316;
-    --primary-foreground: #1a0f02;
-    --secondary: #202024;
-    --secondary-foreground: #f7f7f8;
-    --muted: #1a1a1c;
-    --muted-foreground: #9a9a9f;
-    --accent: #202024;
-    --accent-foreground: #f7f7f8;
-    --destructive: #ef4444;
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: #f97316;
-    --live: #ef4444;
-    --live-foreground: #ffffff;
-    --gold: #f97316;
-    --gold-foreground: #1a0f02;
-    --delivery: #60a5fa;
-    --delivery-foreground: #04142e;
-    --plane-media: var(--gold);
-    --plane-control: #3b82f6;
-    --chart-1: #f97316;
-    --chart-2: #3b82f6;
-    --chart-3: #9a9a9f;
-    --chart-4: #52525b;
-    --chart-5: #2a2a2e;
-    --radius: 0.625rem;
-    --sidebar: #121214;
-    --sidebar-foreground: #f7f7f8;
-    --sidebar-primary: #f97316;
-    --sidebar-primary-foreground: #1a0f02;
-    --sidebar-accent: #202024;
-    --sidebar-accent-foreground: #f7f7f8;
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: #f97316;
 }
 
 @layer base {

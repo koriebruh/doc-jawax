@@ -6,7 +6,7 @@ import { buttonVariants } from "@/components/ui/button";
 <section class="bg-signal-glow relative border-b border-border">
 	<div class="relative mx-auto grid max-w-6xl gap-12 px-6 py-24 md:grid-cols-2 md:items-center md:py-32">
 		<div>
-			<h1 class="text-4xl leading-[1.1] font-semibold text-balance text-foreground md:text-5xl">
+			<h1 class="text-4xl leading-[1.05] font-bold text-balance text-foreground md:text-5xl lg:text-6xl">
 				The streaming engine behind your product, not another platform to log into.
 			</h1>
 			<p class="mt-6 max-w-md text-lg text-muted-foreground">
@@ -14,15 +14,21 @@ import { buttonVariants } from "@/components/ui/button";
 				crash from taking down the rest. Run it yourself or let us run the media
 				plane for you.
 			</p>
-			<div class="mt-8 flex flex-wrap gap-3">
-				<a href="/docs/quickstart-self-host" class={buttonVariants({ size: "lg" })}>
-					Read the quickstart
-				</a>
-				<a href="/#offerings" class={buttonVariants({ size: "lg", variant: "outline" })}>
-					See offerings
-				</a>
+			<div class="mt-9 flex flex-wrap items-start gap-8">
+				<div>
+					<p class="mb-2 text-sm text-muted-foreground">Self-host, free to start</p>
+					<a href="/docs/quickstart-self-host" class={buttonVariants({ size: "lg" })}>
+						Read the quickstart
+					</a>
+				</div>
+				<div>
+					<p class="mb-2 text-sm text-muted-foreground">Or let us run the media plane</p>
+					<a href="/#offerings" class={buttonVariants({ size: "lg", variant: "outline" })}>
+						See offerings
+					</a>
+				</div>
 			</div>
-			<p class="mt-6 font-mono text-xs text-muted-foreground">v0.1.0 · pre-1.0, actively built</p>
+			<p class="mt-8 font-mono text-xs text-muted-foreground">v0.1.0 · pre-1.0, actively built</p>
 		</div>
 		<ApiPreview client:load />
 	</div>
